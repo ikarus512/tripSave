@@ -10,10 +10,17 @@
     "type": "git",
     "url": "git+https://github.com/ikarus512/tripSave.git"
   },
-  "author": "",
+  "author": "ikarus512",
   "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/ikarus512/tripSave/issues"
   },
   "homepage": "https://github.com/ikarus512/tripSave#readme"
+  "devDependencies": {
+    "@ionic/cli-plugin-ionic1": "2.0.1",
+    "gulp": "^3.5.6",
+    "gulp-clean-css": "^3.7.0",
+    "gulp-rename": "^1.2.0",
+    "gulp-sass": "^3.1.0"
+  }
 }
