@@ -15,7 +15,7 @@
   "bugs": {
     "url": "https://github.com/ikarus512/tripSave/issues"
   },
-  "homepage": "https://github.com/ikarus512/tripSave#readme"
+  "homepage": "https://github.com/ikarus512/tripSave#readme",
   "devDependencies": {
     "@ionic/cli-plugin-ionic1": "2.0.1",
     "gulp": "^3.5.6",
