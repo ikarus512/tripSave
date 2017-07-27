@@ -60,83 +60,130 @@ angular.module('starter.controllers', [])
     $scope.takePhoto = takePhoto;
     $scope.cleanup = cleanup;
 
-    function takePhoto() {
+    function takePhoto() {}
+    function cleanup() {}
 
-        openCamera();
 
-        function openCamera() {
 
-            var options = {
-                // Some common settings are 20, 50, and 100
-                quality: 50,
-                destinationType: Camera.DestinationType.FILE_URI,
-                // In this app, dynamically set the picture source, Camera or photo gallery
-                sourceType: Camera.PictureSourceType.CAMERA,
+    (function() {
+      // The width and height of the captured photo. We will set the
+      // width to the value defined here, but the height will be
+      // calculated based on the aspect ratio of the input stream.
 
-                allowEdit: false,
-                encodingType: Camera.EncodingType.JPEG,
-                targetWidth: 400,
-                targetHeight: 400,
+      var width = 320;    // We will scale the photo width to this
+      var height = 0;     // This will be computed based on the input stream
 
-                // mediaType: Camera.MediaType.PICTURE, // unused when sourceType==CAMERA
-                // correctOrientation: true  //Corrects Android orientation quirks
-                // saveToPhotoAlbum: false,
-                // popoverOptions: // iOS only
-                // cameraDirection: BACK //back or front camera used
-            };
+      // |streaming| indicates whether or not we're currently streaming
+      // video from the camera. Obviously, we start at false.
 
-            navigator.camera.getPicture(function cameraSuccess(imageUri) {
+      var streaming = false;
 
-                displayImage(imageUri);
+      // The various HTML elements we need to configure or control. These
+      // will be set by the startup() function.
 
-                // You may choose to copy the picture, save it somewhere, or upload.
-                // createNewFileEntry(imageUri);
+      var video = null;
+      var canvas = null;
+      var photo = null;
+      var startbutton = null;
 
-            }, function cameraError(error) {
-                console.debug("Unable to obtain picture: " + error, "app");
-                alert("Unable to obtain picture: " + error, "app")
+      function startup() {
+        video = document.getElementById('video');
+        canvas = document.getElementById('canvas');
+        photo = document.getElementById('photo');
+        startbutton = document.getElementById('startbutton');
+console.log('video=',video)
+console.log('canvas=',canvas)
+console.log('photo=',photo)
+console.log('startbutton=',startbutton)
 
-            }, options);
+        navigator.getMedia = ( navigator.getUserMedia ||
+                               navigator.webkitGetUserMedia ||
+                               navigator.mozGetUserMedia ||
+                               navigator.msGetUserMedia);
+
+        navigator.getMedia(
+          {
+            video: true,
+            audio: false
+          },
+          function(stream) {
+            if (navigator.mozGetUserMedia) {
+              video.mozSrcObject = stream;
+            } else {
+              var vendorURL = window.URL || window.webkitURL;
+              video.src = vendorURL.createObjectURL(stream);
+            }
+            video.play();
+          },
+          function(err) {
+            console.log("An error occured! ", err);
+            alert("An error occured! " + err.name);
+          }
+        );
+
+        video.addEventListener('canplay', function(ev){
+          if (!streaming) {
+            height = video.videoHeight / (video.videoWidth/width);
+
+            // Firefox currently has a bug where the height can't be read from
+            // the video, so we will make assumptions if this happens.
+
+            if (isNaN(height)) {
+              height = width / (4/3);
+            }
+
+            video.setAttribute('width', width);
+            video.setAttribute('height', height);
+            canvas.setAttribute('width', width);
+            canvas.setAttribute('height', height);
+            streaming = true;
+          }
+        }, false);
+
+        startbutton.addEventListener('click', function(ev){
+          takepicture();
+          ev.preventDefault();
+        }, false);
+
+        clearphoto();
+      }
+
+      // Fill the photo with an indication that none has been
+      // captured.
+
+      function clearphoto() {
+        var context = canvas.getContext('2d');
+        context.fillStyle = "#AAA";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+
+        var data = canvas.toDataURL('image/png');
+        photo.setAttribute('src', data);
+      }
+
+      // Capture a photo by fetching the current contents of the video
+      // and drawing it into a canvas, then converting that to a PNG
+      // format data URL. By drawing it on an offscreen canvas and then
+      // drawing that to the screen, we can change its size and/or apply
+      // other changes before drawing it.
+
+      function takepicture() {
+        var context = canvas.getContext('2d');
+        if (width && height) {
+          canvas.width = width;
+          canvas.height = height;
+          context.drawImage(video, 0, 0, width, height);
+
+          var data = canvas.toDataURL('image/png');
+          photo.setAttribute('src', data);
+        } else {
+          clearphoto();
         }
+      }
 
-        function displayImage(imgUri) {
-            $scope.photos.push({url:imgUri});
-        }
-
-        // function createNewFileEntry(imgUri) {
-        //     window.resolveLocalFileSystemURL(cordova.file.cacheDirectory, function success(dirEntry) {
-
-        //         // JPEG file
-        //         dirEntry.getFile("tempFile.jpeg", { create: true, exclusive: false }, function (fileEntry) {
-
-        //             // Do something with it, like write to it, upload it, etc.
-        //             // writeFile(fileEntry, imgUri);
-        //             console.log("got file: " + fileEntry.fullPath);
-        //             // displayFileData(fileEntry.fullPath, "File copied to");
-
-        //         }, onErrorCreateFile);
-
-        //     }, onErrorResolveUrl);
-        // }
-
-    }
-
-    function cleanup() {
-        // Removes intermediate image files that are kept in temporary storage after calling
-        // camera.getPicture. Applies only when the value of Camera.sourceType equals
-        // Camera.PictureSourceType.CAMERA and the Camera.destinationType equals
-        // Camera.DestinationType.FILE_URI.
-        // ??? Supported Platforms: iOS
-
-        navigator.camera.cleanup(onSuccess, onFail);
-
-        function onSuccess() {
-            alert("Camera cleanup success.")
-        }
-
-        function onFail(message) {
-            alert('Failed because: ' + message);
-        }
-    }
+      // Set up our event listener to run the startup process
+      // once loading is complete.
+      // window.addEventListener('load', startup, false);
+      startup();
+    })();
 
 });

@@ -59,5 +59,6 @@
             "android",
             "browser"
         ]
-    }
+    },
+    "chromium-args": "--enable-usermedia-screen-capturing"
 }
