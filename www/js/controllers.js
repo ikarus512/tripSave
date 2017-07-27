@@ -58,30 +58,32 @@ angular.module('starter.controllers', [])
 .controller('TripSaveCtrl', function($scope) {
     $scope.photos = [{url:'dummy item'}];
     $scope.takePhoto = takePhoto;
+    $scope.cleanup = cleanup;
 
     function takePhoto() {
 
         openCamera();
 
-        function setOptions(srcType) {
+        function openCamera() {
+
             var options = {
                 // Some common settings are 20, 50, and 100
                 quality: 50,
                 destinationType: Camera.DestinationType.FILE_URI,
                 // In this app, dynamically set the picture source, Camera or photo gallery
-                sourceType: srcType,
+                sourceType: Camera.PictureSourceType.CAMERA,
+
+                allowEdit: false,
                 encodingType: Camera.EncodingType.JPEG,
-                mediaType: Camera.MediaType.PICTURE,
-                allowEdit: true,
-                correctOrientation: true  //Corrects Android orientation quirks
-            }
-            return options;
-        }
+                targetWidth: 400,
+                targetHeight: 400,
 
-        function openCamera(selection) {
-
-            var srcType = Camera.PictureSourceType.CAMERA;
-            var options = setOptions(srcType);
+                // mediaType: Camera.MediaType.PICTURE, // unused when sourceType==CAMERA
+                // correctOrientation: true  //Corrects Android orientation quirks
+                // saveToPhotoAlbum: false,
+                // popoverOptions: // iOS only
+                // cameraDirection: BACK //back or front camera used
+            };
 
             navigator.camera.getPicture(function cameraSuccess(imageUri) {
 
@@ -118,4 +120,23 @@ angular.module('starter.controllers', [])
         // }
 
     }
+
+    function cleanup() {
+        // Removes intermediate image files that are kept in temporary storage after calling
+        // camera.getPicture. Applies only when the value of Camera.sourceType equals
+        // Camera.PictureSourceType.CAMERA and the Camera.destinationType equals
+        // Camera.DestinationType.FILE_URI.
+        // ??? Supported Platforms: iOS
+
+        navigator.camera.cleanup(onSuccess, onFail);
+
+        function onSuccess() {
+            alert("Camera cleanup success.")
+        }
+
+        function onFail(message) {
+            alert('Failed because: ' + message);
+        }
+    }
+
 });

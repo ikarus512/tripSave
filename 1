@@ -4,10 +4,10 @@ ionic cordova run android
 https://view.ionic.io
 
   debug:
-  ionic cordova plugin add cordova-plugin-crosswalk-webview   ### needed only for debug (chrome://inspect)
+  ionic cordova plugin add cordova-plugin-crosswalk-webview   ### needed only for debug (chrome://inspect)    and webRTC
   ionic cordova plugin rm  cordova-plugin-crosswalk-webview
 
-ionic cordova plugin rm cordova-plugin-camera
+ionic cordova plugin rm cordova-plugin-camera    # this plugin requires user intercation
 ionic cordova platform rm browser
 ionic cordova platform rm android
 
@@ -22,3 +22,7 @@ WISH:
 - background mode
   ionic2 plugins naive:     https://ionicframework.com/docs/native/background-mode
   ionic1 plugins ngCordova: http://ngcordova.com/docs/plugins/camera
+  ionic1 example: http://sourcefreeze.com/cordova-camera-plugin-example-using-ionic-framework
+  https://stackoverflow.com/questions/39213327/run-ionic-app-in-a-background-mode
+
+camera without user intercation: WebRTC (current cordova In-App-Browser doesn't support WebRTC, so you have to use Crosswalk)
