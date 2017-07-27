@@ -7,9 +7,18 @@ https://view.ionic.io
   ionic cordova plugin add cordova-plugin-crosswalk-webview   ### needed only for debug (chrome://inspect)
   ionic cordova plugin rm  cordova-plugin-crosswalk-webview
 
+ionic cordova plugin rm cordova-plugin-camera
+ionic cordova platform rm browser
+ionic cordova platform rm android
+
+ionic cordova platform add browser && ionic cordova platform add android && ionic cordova plugin add cordova-plugin-camera
+ionic cordova platform ls
 
 WISH:
 - take photo
 - take GPS coords
 - lock screen (switch off?),
   and unlock after sequence of hardware button presses
+- background mode
+  ionic2 plugins naive:     https://ionicframework.com/docs/native/background-mode
+  ionic1 plugins ngCordova: http://ngcordova.com/docs/plugins/camera
