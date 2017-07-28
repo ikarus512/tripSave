@@ -59,9 +59,7 @@ angular.module('starter.controllers', [])
     $scope.photos = [{url:'dummy item'}];
     $scope.takePhoto = takePhoto;
 
-    startup();
-
-    function takePhoto() {takepicture();}
+    function takePhoto() { takepicture(); }
 
 
 
@@ -89,11 +87,10 @@ angular.module('starter.controllers', [])
         canvas = document.getElementById('canvas');
         photo = document.getElementById('photo');
 
-        // navigator.getMedia = ( navigator.getUserMedia || navigator.webkitGetUserMedia);
         navigator.getMedia = ( navigator.getUserMedia ||
-                               navigator.webkitGetUserMedia ||
-                               navigator.mozGetUserMedia ||
-                               navigator.msGetUserMedia);
+                   navigator.webkitGetUserMedia ||
+                   navigator.mozGetUserMedia ||
+                   navigator.msGetUserMedia);
 
         // https://developer.mozilla.org/en/docs/Web/API/Navigator/getUserMedia
         // https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
@@ -112,9 +109,6 @@ angular.module('starter.controllers', [])
                     video.src = vendorURL.createObjectURL(stream);
                 }
                 video.play();
-                // var vendorURL = window.URL || window.webkitURL;
-                // video.src = vendorURL.createObjectURL(stream);
-                // video.play();
             },
             function(err) {
                 console.log("An error occured! ", err);
@@ -175,5 +169,10 @@ angular.module('starter.controllers', [])
             clearphoto();
         }
     }
+
+    // Set up our event listener to run the startup process
+    // once loading is complete.
+    // window.addEventListener('load', startup, false);
+    startup();
 
 });

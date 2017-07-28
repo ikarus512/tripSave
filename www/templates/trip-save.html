@@ -2,19 +2,22 @@
     <ion-content>
         <h1>Trip Save</h1>
 
-        <button class="button" ng-click='takePhoto()'> Take Photo </button>
         <!-- <ul> <li ng-repeat='photo in photos'> {{photo.url}} </li> </ul> -->
 
-        <div class="camera">
-            <p> Camera: </p>
-            <video id="video">Video stream not available.</video>
-        </div>
-        <canvas id="canvas"> </canvas>
-        <div class="output">
-            <p> Photo: </p>
-            <img id="photo" alt="The screen capture will appear in this box.">
-        </div>
+        <div class="contentarea">
+            <div class="camera">
+                <h3> Camera: </h3>
+                <video id="video">Video stream not available.</video>
+            </div>
+            <canvas id="canvas"> </canvas>
 
+            <button class="button" ng-click='takePhoto()'> Take Photo </button>
+
+            <div class="output">
+                <h3> Photo: </h3>
+                <img id="photo" alt="The screen capture will appear in this box.">
+            </div>
+        </div>
 
     </ion-content>
 </ion-view>
