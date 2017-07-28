@@ -92,7 +92,9 @@ angular.module('starter.controllers', [])
                    navigator.mozGetUserMedia ||
                    navigator.msGetUserMedia);
 
+        // Deprecated in MDN:
         // https://developer.mozilla.org/en/docs/Web/API/Navigator/getUserMedia
+        // New version (does not work with crosswalk plugin):
         // https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
         navigator.getMedia(
             {
@@ -111,8 +113,10 @@ angular.module('starter.controllers', [])
                 video.play();
             },
             function(err) {
-                console.log("An error occured! ", err);
-                alert("An error occured! " + err.name);
+                var msg = 'Error in getUserMedia(). ' +
+                        err.name + ':' + err.message;
+                console.log(msg);
+                alert(msg);
             }
         );
 
