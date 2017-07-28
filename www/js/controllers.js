@@ -69,6 +69,7 @@ angular.module('starter.controllers', [])
 
     var width = 320;    // We will scale the photo width to this
     var height = 0;     // This will be computed based on the input stream
+    var imageQuality = 0.5;
 
     // |streaming| indicates whether or not we're currently streaming
     // video from the camera. Obviously, we start at false.
@@ -150,7 +151,7 @@ angular.module('starter.controllers', [])
         context.fillStyle = "#AAA";
         context.fillRect(0, 0, canvas.width, canvas.height);
 
-        var data = canvas.toDataURL('image/png');
+        var data = canvas.toDataURL('image/jpeg', imageQuality);
         photo.setAttribute('src', data);
     }
 
@@ -167,7 +168,7 @@ angular.module('starter.controllers', [])
             canvas.height = height;
             context.drawImage(video, 0, 0, width, height);
 
-            var data = canvas.toDataURL('image/png');
+            var data = canvas.toDataURL('image/jpeg', imageQuality);
             photo.setAttribute('src', data);
         } else {
             clearphoto();
