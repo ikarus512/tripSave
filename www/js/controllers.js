@@ -55,7 +55,7 @@ angular.module('starter.controllers', [])
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 })
 
-.controller('TripSaveCtrl', function($scope) {
+.controller('TripSaveCtrl', ['$scope', '$window', function($scope, $window) {
     $scope.photos = [{url:'dummy item'}];
     $scope.takePhoto = takePhoto;
 
@@ -79,6 +79,7 @@ angular.module('starter.controllers', [])
     // The various HTML elements we need to configure or control. These
     // will be set by the startup() function.
 
+    // newImg = document.createElement('img');
     var video = null;
     var canvas = null;
     var photo = null;
@@ -170,6 +171,40 @@ angular.module('starter.controllers', [])
 
             var data = canvas.toDataURL('image/jpeg', imageQuality);
             photo.setAttribute('src', data);
+
+save('newPersistentFile1.txt');
+function save(myfilename){
+    $window.requestFileSystem($window.LocalFileSystem.PERSISTENT,0,function(fs){
+        // alert('file system open: ' + fs.name);
+        fs.root.getFile(myfilename, { create: true, exclusive: false }, function (fileEntry) {
+            // alert("fileEntry is file?" + fileEntry.isFile.toString());
+            // alert("fileEntry.name=" + fileEntry.name);
+            // alert("fileEntry.fullPath=" + fileEntry.fullPath);
+            canvas.toBlob(function(blob) {writeFile(fileEntry, blob)}, 'image/jpeg', imageQuality);
+            // writeFile(fileEntry, null);
+        },function(err){alert('getFile error. '+err.name+': '+err.message);});
+    },function(err){alert('requestFileSystem error. '+err.name+': '+err.message);});
+    function writeFile(fileEntry, dataObj) {
+        // Create a FileWriter object for our FileEntry (log.txt).
+        fileEntry.createWriter(function (fileWriter) {
+            fileWriter.onwriteend = function() {
+                // alert("Successful file write...");
+                readFile(fileEntry);
+            };
+            fileWriter.onerror = function (e) {
+                alert("Failed file write: " + e.toString());
+            };
+            // If data object is not passed in,
+            // create a new Blob instead.
+            if (!dataObj) {
+                dataObj = new Blob(['some file data'], { type: 'text/plain' });
+            }
+            fileWriter.write(dataObj);
+        });
+    }
+}
+
+
         } else {
             clearphoto();
         }
@@ -180,4 +215,4 @@ angular.module('starter.controllers', [])
     // window.addEventListener('load', startup, false);
     startup();
 
-});
+}]);
