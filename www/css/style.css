@@ -22,7 +22,8 @@
 
 .camera {
   width: 340px;
-  display:inline-block;
+  // display:inline-block;
+  display: none;
 }
 
 .output {

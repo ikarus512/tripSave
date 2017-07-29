@@ -1,0 +1,20 @@
+problem:
+    Failed to load resource: net::ERR_FILE_NOT_FOUND
+    file:///android_asset/www/js/_controllers/controllers.module.js
+    does not load all js files
+solution: (solved only by 4)
+    1) remove/add android platform
+    2) add to config.xml:
+      <allow-navigation href="data:*" />
+      <allow-navigation href="file:*" />
+      <allow-navigation href="*" />
+      <allow-intent href="*" />
+      <allow-intent href="file:*" />
+    3) add to index.html:
+      <meta http-equiv="Content-Security-Policy"
+          content="script-src * 'unsafe-eval';
+                          connect-src * 'unsafe-eval';
+                          object-src 'self';
+                          style-src * 'unsafe-inline';
+                          img-src *">
+    4) keep all js files in same subdirectory
