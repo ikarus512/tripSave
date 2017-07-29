@@ -20,16 +20,22 @@
     .controller('TripSaveCtrl', [
         '$scope', 'DateStr', 'Photo',
         function($scope, DateStr, Photo) {
-        $scope.photos = [{url:'dummy item'}];
-        $scope.takePhoto = takePhoto;
 
-        var subDirName = DateStr.yyyymmdd();
-        var fileName = DateStr.yyyymmddHhmmssMms() + '.jpg';
+            $scope.photos = [{url:'dummy item'}];
+            $scope.takePhoto = takePhoto;
 
-        function takePhoto() { Photo.takepicture(subDirName, fileName); }
+            var
+                subDirName = DateStr.yyyymmdd(),
+                fileName;
 
-        Photo.startup();
+            function takePhoto() {
+                fileName = DateStr.yyyymmddHhmmssMms() + '.jpg';
+                Photo.takepicture(subDirName, fileName);
+            }
 
-    }]);
+            Photo.startup();
+        }
+
+    ]);
 
 }());
