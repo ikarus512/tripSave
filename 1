@@ -16,7 +16,12 @@ ionic cordova platform ls
 
 WISH:
 - take photo
+  <uses-feature android:name="android.hardware.camera" />
+  <uses-feature android:name="android.hardware.camera.autofocus" />
+  <uses-permission android:name="android.permission.CAMERA" />
 - take GPS coords
+  https://crosswalk-project.org/documentation/apis/web_apis.html
+  https://www.w3.org/TR/geolocation-API
 - lock screen (switch off?),
   and unlock after sequence of hardware button presses
 - background mode
@@ -24,6 +29,8 @@ WISH:
   ionic1 plugins ngCordova: http://ngcordova.com/docs/plugins/camera
   ionic1 example: http://sourcefreeze.com/cordova-camera-plugin-example-using-ionic-framework
   https://stackoverflow.com/questions/39213327/run-ionic-app-in-a-background-mode
+  https://cordova.apache.org/plugins/?q=background
+  https://www.npmjs.com/package/cordova-plugin-background-mode
 
 WebRTC:
   camera without user intercation: WebRTC (current cordova In-App-Browser doesn't support WebRTC, so you have to use Crosswalk)

@@ -45,49 +45,48 @@
             canvas = document.getElementById('canvas');
             photo = document.getElementById('photo');
 
-            navigator.getMedia = ( navigator.getUserMedia ||
-                       navigator.webkitGetUserMedia ||
-                       navigator.mozGetUserMedia ||
-                       navigator.msGetUserMedia);
-
-            // Deprecated in MDN:
-            // https://developer.mozilla.org/en/docs/Web/API/Navigator/getUserMedia
-            // New version (does not work with crosswalk plugin):
-            // https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
-            navigator.getMedia(
-                {
-                    video: true,
+            navigator.mediaDevices.enumerateDevices()
+            .then(function(deviceInfoArray) {
+                // Get id of rear camera (on my phone it is last videoinput device)
+                var deviceId;
+                deviceInfoArray.forEach(function(deviceInfo) {
+                    if (deviceInfo.kind === 'videoinput') {
+                        deviceId = deviceInfo.deviceId;
+                    }
+                });
+                return deviceId;
+            })
+            .then(function(deviceId){
+                return navigator.mediaDevices.getUserMedia({
+                    // video: true,
                     // video: { facingMode: "user" }, // front camera
                     // video: { facingMode: { exact: "environment" } }, // rear camera
-                    audio: false
-                },
-                function(stream) {
-                    if (navigator.mozGetUserMedia) {
-                        video.mozSrcObject = stream;
-                    } else {
-                        var vendorURL = window.URL || window.webkitURL;
-                        video.src = vendorURL.createObjectURL(stream);
-                    }
+                    // video: { facingMode: "environment" }, // rear camera
+                    video: { deviceId: deviceId },
+                    // audio: false
+                });
+            })
+            .then(function(mediaStream) {
+                // var track = mediaStream.getTracks()[0];
+                // var constraints = track.getConstraints();
+                video.srcObject = mediaStream;
+                video.onloadedmetadata = function(e) {
                     video.play();
-                },
-                function(err) {
-                    var msg = 'Error in getUserMedia(). ' +
-                            err.name + ':' + err.message;
-                    console.log(msg);
-                    alert(msg);
-                }
-            );
+                };
+            })
+            .catch(function(err) {
+                var msg = 'Error in getUserMedia(). ' + err.name + ':' + err.message;
+                console.log(msg);
+                alert(msg);
+            });
 
             video.addEventListener('canplay', function(ev){
                 if (!streaming) {
                     height = video.videoHeight / (video.videoWidth/width);
 
-                    // Firefox currently has a bug where the height can't be read from
-                    // the video, so we will make assumptions if this happens.
-
-                    if (isNaN(height)) {
-                        height = width / (4/3);
-                    }
+                    // // Firefox currently has a bug where the height can't be read from
+                    // // the video, so we will make assumptions if this happens.
+                    // if (isNaN(height)) { height = width / (4/3); }
 
                     video.setAttribute('width', width);
                     video.setAttribute('height', height);

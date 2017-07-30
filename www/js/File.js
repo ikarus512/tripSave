@@ -25,7 +25,7 @@
             var dirName = 'tripSave';
 
             function savePicture(subDirName, fileName, canvas, mimeType, imageQuality) {
-                $window.requestFileSystem($window.LocalFileSystem.PERSISTENT,0,function(fs){
+                $window.requestFileSystem($window.LocalFileSystem.PERSISTENT, 0, function(fs){
                     // alert('file system open: ' + fs.name);
                     fs.root.getDirectory(dirName, { create: true }, function (dirEntry) {
                         dirEntry.getDirectory(subDirName, { create: true }, function (dirEntry) {
@@ -58,11 +58,13 @@
                         fileWriter.write(dataObj);
                     });
                 } // function writeFile(...)
+
                 function onFsError(errTitle) {
                     return function(err){
                         alert(errTitle + ' '+err.name+': '+err.message);
                     }
                 } // function onFsError(...)
+
             } // function savePicture(...)
 
             return {
