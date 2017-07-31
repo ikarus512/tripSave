@@ -22,6 +22,7 @@
       function () {
 
         function yyyymmdd() {
+try{
             var
                 date = new Date(),
                 d = date.getDate(),
@@ -31,9 +32,11 @@
                 s = n.toString();
 
             return s;
+}catch(err){console.log(err);}
         } // function yyyymmdd(...)
 
         function yyyymmddHhmmssMms() {
+try{
             var
                 date = new Date(),
                 d = date.getDate(),
@@ -55,6 +58,7 @@
                 res = s1 + '-' + s2 + '-' + s3;
 
             return res;
+}catch(err){console.log(err);}
         } // function yyyymmddHhmmssMms(...)
 
         return {

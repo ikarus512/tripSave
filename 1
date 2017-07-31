@@ -14,14 +14,23 @@ ionic cordova platform rm android
 ionic cordova platform add browser && ionic cordova platform add android && ionic cordova plugin add cordova-plugin-camera
 ionic cordova platform ls
 
-WISH:
 - take photo
-  <uses-feature android:name="android.hardware.camera" />
-  <uses-feature android:name="android.hardware.camera.autofocus" />
-  <uses-permission android:name="android.permission.CAMERA" />
+  WebRTC:
+  camera without user intercation: WebRTC (current cordova In-App-Browser doesn't support WebRTC, so you have to use Crosswalk)
+  add to android manifest:
+    ? <uses-feature android:name="android.hardware.camera" />
+    ? <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    MODIFY_AUDIO_SETTINGS
+    <uses-permission android:name="android.permission.CAMERA" />
+
+WISH:
 - take GPS coords
   https://crosswalk-project.org/documentation/apis/web_apis.html
   https://www.w3.org/TR/geolocation-API
+  https://stackoverflow.com/questions/28263008/cannot-get-geolocation-with-crosswalk-on-ionic-framework-no-errors-found
+  http://ngcordova.com/docs/plugins/geolocation
+  https://stackoverflow.com/questions/35304103/phonegap-how-to-check-if-gps-is-enabled
 - lock screen (switch off?),
   and unlock after sequence of hardware button presses
 - background mode
@@ -31,11 +40,3 @@ WISH:
   https://stackoverflow.com/questions/39213327/run-ionic-app-in-a-background-mode
   https://cordova.apache.org/plugins/?q=background
   https://www.npmjs.com/package/cordova-plugin-background-mode
-
-WebRTC:
-  camera without user intercation: WebRTC (current cordova In-App-Browser doesn't support WebRTC, so you have to use Crosswalk)
-  add to android manifest:
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    MODIFY_AUDIO_SETTINGS
-    <uses-permission android:name="android.permission.CAMERA" />
-  https://stackoverflow.com/questions/28934014/getusermedia-android-webview-ionic

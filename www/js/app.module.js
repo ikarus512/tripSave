@@ -15,6 +15,6 @@
 (function() {
     'use strict';
 
-    angular.module('app', ['ionic', 'app.controllers', 'app.services']);
+    angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ngCordova']);
 
 }());

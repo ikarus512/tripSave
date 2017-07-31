@@ -61,6 +61,7 @@ typings/
 
 
 # Specifies intentionally untracked files to ignore when using Git
+_tmp/
 node_modules/
 platforms/
 plugins/

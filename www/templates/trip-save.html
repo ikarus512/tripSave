@@ -1,8 +1,5 @@
 <ion-view view-title="Trip Save">
     <ion-content>
-        <!-- <h1>Trip Save</h1> -->
-
-        <!-- <ul> <li ng-repeat='photo in photos'> {{photo.url}} </li> </ul> -->
 
         <div class="contentarea">
             <div class="camera">
@@ -12,13 +9,26 @@
             <canvas id="canvas"> </canvas>
 
             <div class="output">
-                <h3> Photo: </h3>
+                <!-- <h3> Photo: </h3> -->
                 <img id="photo" alt="The screen capture will appear in this box.">
             </div>
 
-            <button class="button" ng-click='takePhoto()'> Take Photo </button>
+            <button class="button" ng-click='trackStart()'> Track Start </button>
+            <button class="button" ng-click='trackFinish()'> Track Finish </button>
 
         </div>
+
+        <p> Points: {{points.length}}. </p>
+
+        <ol>
+            <li ng-repeat='point in points'>
+                <!-- lat: {{point.lat}}, -->
+                <!-- lng: {{point.lng}}, -->
+                <!-- photo: {{point.photoUrl}}, -->
+                {{point.str}}
+                <br/><br/>
+            </li>
+        </ol>
 
     </ion-content>
 </ion-view>
