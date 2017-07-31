@@ -23,6 +23,7 @@
 
 try{
             $scope.points = [];
+            $scope.numPoints = 0;
             $scope.trackStart = trackStart;
             $scope.trackFinish = trackFinish;
 
@@ -63,6 +64,7 @@ try{
                         Photo.takePicture(subDirName, photoFileName); // take picture and save to file
                         $scope.points.push(pos);
                         if ($scope.points.length > 5) { $scope.points.shift(); }
+                        $scope.numPoints++;
                         $scope.$digest();
                         // $scope.$apply(); // calls $rootScope.$digest()
                         // $scope.$apply(func); // calls $rootScope.$digest() and handles exc. to $exceptionHandler
