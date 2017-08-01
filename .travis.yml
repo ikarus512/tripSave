@@ -7,14 +7,15 @@ sudo: false
 # sudo: required
 
 ### https://docs.travis-ci.com/user/languages/android/
-# language: node_js
-language: android
-android:
-  components:
-  - platform-tools
-  - tools
-  - build-tools-22.0.1
-  - android-22
+# language: android
+# android:
+#   components:
+#   - platform-tools
+#   - tools
+#   - build-tools-22.0.1
+#   - android-22
+
+language: node_js
 node_js:
   - "6"
 
