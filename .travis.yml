@@ -29,7 +29,15 @@ git:
 
 before_install:
   - npm i -g npm
-  # Set up android build environment
+  #
+  ### Unpack ssh key for git
+  # - echo -n $id_rsa_{00..30} >> ~/.ssh/id_rsa_base64
+  # - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
+  # - chmod 600 ~/.ssh/id_rsa
+  # # Disable SSH server fingerprint verification
+  # - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+  #
+  ### Set up android build environment
   # - sudo apt-get update -qq
   # - if [ `uname -m` = x86_64 ]; then sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confnew" install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch; fi
   - wget http://dl.google.com/android/android-sdk_r21.0.1-linux.tgz
@@ -44,7 +52,8 @@ install:
   - npm install -g gulp bower cordova ionic
   - npm install
   - bower update
-  - ionic cordova prepare
+  # - ionic cordova prepare
+  # - ionic cordova platform add android
 
 before_script:
   # - wget http://dl.google.com/android/android-sdk_r24.4-linux.tgz
