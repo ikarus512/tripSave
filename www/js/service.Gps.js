@@ -71,7 +71,8 @@ try{
                         subDirName: subDirName,
                         photoFileName: photoFileName
                     };
-                    pos.htm = '<p> lng=' + pos.lng + ' lat=' + pos.lat + ' ' + pos.str + '<br/><img src=\'' + pos.photoUrl + '\'>';
+                    pos.htm = '<p> lng=' + pos.lng + ' lat=' + pos.lat + ' ' + pos.str +
+                        '<br/><img src="' + pos.photoUrl + '"  width="400px">';
                     pos.kml = pos.lng + ',' + pos.lat + ',0 ';
 
                     if (callback) {

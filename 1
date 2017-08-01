@@ -14,23 +14,21 @@ ionic cordova platform rm android
 ionic cordova platform add browser && ionic cordova platform add android && ionic cordova plugin add cordova-plugin-camera
 ionic cordova platform ls
 
+- travis-ci build: https://github.com/svenlaater/travis-ci-ionic-yml
 - take photo
-  WebRTC:
   camera without user intercation: WebRTC (current cordova In-App-Browser doesn't support WebRTC, so you have to use Crosswalk)
   add to android manifest:
     ? <uses-feature android:name="android.hardware.camera" />
     ? <uses-feature android:name="android.hardware.camera.autofocus" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    MODIFY_AUDIO_SETTINGS
-    <uses-permission android:name="android.permission.CAMERA" />
-
-WISH:
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />, MODIFY_AUDIO_SETTINGS, CAMERA
 - take GPS coords
   https://crosswalk-project.org/documentation/apis/web_apis.html
   https://www.w3.org/TR/geolocation-API
   https://stackoverflow.com/questions/28263008/cannot-get-geolocation-with-crosswalk-on-ionic-framework-no-errors-found
   http://ngcordova.com/docs/plugins/geolocation
   https://stackoverflow.com/questions/35304103/phonegap-how-to-check-if-gps-is-enabled
+
+WISH:
 - lock screen (switch off?),
   and unlock after sequence of hardware button presses
 - background mode
