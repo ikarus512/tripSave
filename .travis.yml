@@ -48,10 +48,10 @@ before_script:
   - export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/23.0.2
   # - ionic cordova platform rm android
   # - ionic cordova platform add android
-
-script:
   # - ionic cordova prepare
   - cordova prepare
+
+script:
   - ionic cordova build android
 
 deploy:
