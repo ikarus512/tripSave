@@ -29,38 +29,71 @@ git:
 
 before_install:
   - npm i -g npm
+  # Set up android build environment
+  # - sudo apt-get update -qq
+  # - if [ `uname -m` = x86_64 ]; then sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confnew" install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch; fi
+  - wget http://dl.google.com/android/android-sdk_r21.0.1-linux.tgz
+  - tar xzf android-sdk_r21.0.1-linux.tgz
+  - export ANDROID_HOME=$PWD/android-sdk-linux
+  - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+  - android list sdk
+  - android update sdk --filter platform-tools,android-16,android-25,extra-android-support --no-ui --force
+  - git submodule update --init --recursive
 
 install:
   - npm install -g gulp bower cordova ionic
   - npm install
   - bower update
+  - ionic cordova prepare
 
 before_script:
-  - wget http://dl.google.com/android/android-sdk_r24.4-linux.tgz
-  - tar -xvf android-sdk_r24.4-linux.tgz
-  - echo y | ./android-sdk-linux/tools/android update sdk --no-ui --all --filter platform-tools
-  - echo y | ./android-sdk-linux/tools/android update sdk --no-ui --all --filter build-tools-23.0.2
-  - echo y | ./android-sdk-linux/tools/android update sdk --no-ui --all --filter android-23
-  - echo y | ./android-sdk-linux/tools/android update sdk --no-ui --all --filter extra-android-support
-  - echo y | ./android-sdk-linux/tools/android update sdk --no-ui --all --filter extra-android-m2repository
-  - echo y | ./android-sdk-linux/tools/android update sdk --no-ui --all --filter extra-google-m2repository
-  - export ANDROID_HOME=$PWD/android-sdk-linux
-  - export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/23.0.2
+  # - wget http://dl.google.com/android/android-sdk_r24.4-linux.tgz
+  # - tar -xvf android-sdk_r24.4-linux.tgz
+  # - echo y | ./android-sdk-linux/tools/android update sdk --no-ui --all --filter platform-tools
+  # - echo y | ./android-sdk-linux/tools/android update sdk --no-ui --all --filter build-tools-23.0.2
+  # - echo y | android update sdk -u --filter android-16
+  # - echo y | ./android-sdk-linux/tools/android update sdk --no-ui --all --filter android-23
+  # - echo y | ./android-sdk-linux/tools/android update sdk --no-ui --all --filter extra-android-support
+  # - echo y | ./android-sdk-linux/tools/android update sdk --no-ui --all --filter extra-android-m2repository
+  # - echo y | ./android-sdk-linux/tools/android update sdk --no-ui --all --filter extra-google-m2repository
+  # - export ANDROID_HOME=$PWD/android-sdk-linux
+  # - export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/23.0.2
+  #
   # - ionic cordova platform rm android
   # - ionic cordova platform add android
   # - ionic cordova prepare
-  - cordova prepare
+  # - cordova prepare
 
 script:
   - ionic cordova build android
 
-deploy:
-  provider: releases
-  api_key:
-    secure: YOUR_API_KEY_ENCRYPTED
-  file:
-    - "platforms/android/build/outputs/apk/android-armv7-debug.apk"
-    - "platforms/android/build/outputs/apk/android-x86-debug.apk"
-  skip_cleanup: true
-  on:
-    tags: true
+# deploy:
+#   provider: releases
+#   api_key:
+#     secure: YOUR_API_KEY_ENCRYPTED
+#   file:
+#     - "platforms/android/build/outputs/apk/android-armv7-debug.apk"
+#     - "platforms/android/build/outputs/apk/android-x86-debug.apk"
+#   skip_cleanup: true
+#   on:
+#     tags: true
+
+# #https://github.com/floydpink/Mantis-CI/blob/master/.travis.yml:
+# after_script:
+#   - mkdir tempclone
+#   - cd tempclone
+#   - git clone $REPO.git Mantis-CI
+#   - cd Mantis-CI
+#   - git config user.email "imbleedingme@googlemail.com"
+#   - git config user.name "Floyd Pink"
+#   - cp ../../bin/MantisCI-release.apk deploy/ -f
+#   - git add .
+#   - git commit -a -m "Committed from CI (build number - $((TRAVIS_JOB_ID - 1))) [ci skip]"
+#   - git push origin master
+# env:
+#   global:
+#     # Repo read-write address
+#     - REPO="git@github.com:floydpink/Mantis-CI"
+#     # SSH key. Encoded. See https://gist.github.com/4631240
+#     - secure: "Cq2JLLOoLRUqz7YETnSk2pysaIVxbuxuS+hamqmPN24ImHf4myrWm3THq37s\n1TWn4UBDKPRxZPdllzMTeFSSHxXCKUW4sQBhGogkv1Qf2TY2iliv08rf+pXc\nL7xgqkQE4eYizqsWi9+yWo3NHi6gYLe7nIufEaJtIe08kOmoLcI="
+#     - secure: "I2pEXbp+k3Kgi1p8wQhsmqHTUn+mC54Ey/aDHXYTb4+sarDwifsSE45l/gca\nwlbRjU6vU4TO/paxgbFfDDok5E28pu7vuMxS+ooSaQiWCwC6wtBS03gG+KnY\n5fid8AouVCLs8GC4HMhGG8xK70mgSnrG6/z8K0nEDmV3vQpWPVI="
