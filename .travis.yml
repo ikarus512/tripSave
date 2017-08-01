@@ -3,7 +3,8 @@
 # https://docs.travis-ci.com/user/languages/javascript-with-nodejs
 # https://github.com/svenlaater/travis-ci-ionic-yml
 
-sudo: false
+# sudo: false
+sudo: required
 
 language: node_js
 node_js:
@@ -52,7 +53,7 @@ install:
   - npm install -g gulp bower cordova ionic
   - npm install
   - bower update
-  # - ionic cordova prepare
+  - ionic cordova prepare
   # - ionic cordova platform add android
 
 before_script:
