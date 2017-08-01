@@ -46,11 +46,20 @@ before_script:
   - echo y | ./android-sdk-linux/tools/android update sdk --no-ui --all --filter extra-google-m2repository
   - export ANDROID_HOME=$PWD/android-sdk-linux
   - export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/23.0.2
-
-before_script:
-  - ionic cordova platform rm android
-  - ionic cordova platform add android
+  # - ionic cordova platform rm android
+  # - ionic cordova platform add android
 
 script:
   - ionic cordova prepare
   - ionic cordova build android
+
+deploy:
+  provider: releases
+  api_key:
+    secure: YOUR_API_KEY_ENCRYPTED
+  file:
+    - "platforms/android/build/outputs/apk/android-armv7-debug.apk"
+    - "platforms/android/build/outputs/apk/android-x86-debug.apk"
+  skip_cleanup: true
+  on:
+    tags: true
