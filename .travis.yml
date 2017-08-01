@@ -7,7 +7,7 @@ sudo: false
 
 language: node_js
 node_js:
-  - "5.1"
+  - "6"
 
 addons:
   apt:
@@ -26,6 +26,9 @@ branches:
   - master
 git:
   depth: 5
+
+before_install:
+  - npm i -g npm
 
 install:
   - npm install -g gulp bower cordova ionic
