@@ -58,11 +58,15 @@ before_install:
   - source ./scripts/android_sdk_install.sh
 
 install:
-  - npm config get prefix
   - npm install -g gulp bower cordova ionic
   - npm install
   - bower update
   - source ./scripts/ionic_cordova_prepare.sh
+
+before_script:
+  - npm config get prefix
+  - set | grep -P "^\w+="
+  - set | grep -P "^\w+=.*/home/travis"
 
 script:
   - ionic cordova build android #--verbose
