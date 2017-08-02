@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-chmod +x hooks/after_prepare/010_add_platform_class.js
+chmod -R +x hooks
 
 if [ ! -e platforms ];then
 

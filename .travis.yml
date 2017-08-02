@@ -57,6 +57,8 @@ before_install:
   ### Set up android build environment
   - source ./scripts/android_sdk_install.sh
 
+  - npm config get prefix
+
 install:
   - npm install -g gulp bower cordova ionic
   - npm install
