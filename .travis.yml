@@ -22,7 +22,7 @@ sudo: false
 #     - 'google-gdk-license-.+'
 
 language: node_js
-# node_js: "6"
+node_js: "6"
 
 addons:
   apt:
@@ -44,7 +44,7 @@ git:
   depth: 5
 
 before_install:
-  - nvm install 6 # install node_js 6
+  # - nvm install 6 # install node_js 6
   - npm i -g npm
   - node --version
   - npm --version
@@ -72,10 +72,10 @@ install:
 #   - set | grep -P "^\w+=.*/home/travis"
 
 script:
-  - echo 'Run script...'
-  - echo -en 'travis_fold:start:script.1\\r'
-  - ionic cordova build android #--verbose
-  - echo -en 'travis_fold:end:script.1\\r'
+  - echo 'script run...'; echo -en 'travis_fold:start:script.1\\r'; SECONDS=0
+  -   ionic cordova build android #--verbose
+  - duration=$SECONDS; echo -en 'travis_fold:end:script.1\\r'
+  - echo "script run $(($duration / 60))m $(($duration % 60))s"
 
 # build cache to preserve files/folders between builds
 cache: # disable cache to see 'npm install' warnings
@@ -83,8 +83,11 @@ cache: # disable cache to see 'npm install' warnings
   - node_modules
   - platforms
   - plugins
-  # - android-sdk-linux
-  - $NVM_DIR # $(npm config get prefix)
+  # - $(npm config get prefix) # subpath of $NVM_DIR
+
+  # Only one of further (sdk or nvm) fit cache:
+  - android-sdk-linux
+  - $NVM_DIR
 
 # deploy:
 #   provider: releases
