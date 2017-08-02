@@ -50,30 +50,16 @@ before_install:
   # ### Set up android build environment
   # # - sudo apt-get update -qq
   # # - if [ `uname -m` = x86_64 ]; then sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confnew" install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch; fi
-  # - wget http://dl.google.com/android/android-sdk_r21.0.1-linux.tgz
-  # - tar xzf android-sdk_r21.0.1-linux.tgz
-  # - export ANDROID_HOME=$PWD/android-sdk-linux
-  # - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
-  # - android list sdk
-  # - android update sdk --filter platform-tools,android-16,android-25,extra-android-support --no-ui --force
-  # - git submodule update --init --recursive
-
-  # - FILTER=tool,platform,android-20
-  # - ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui --all --filter ${FILTER}
 
   ### Set up android build environment
-  # # install Android SDK dependencies
-  # - apt-get install -y openjdk-7-jre-headless lib32z1 lib32ncurses5 lib32bz2-1.0 g++-multilib
-  # - wget -qO- "http://dl.google.com/android/android-sdk_r23.0.2-linux.tgz" | tar -zxv -C /opt/
-  # - echo y | /opt/android-sdk-linux/tools/android update sdk --all --filter platform-tools,build-tools-20.0.0 --no-ui --force
   - wget http://dl.google.com/android/android-sdk_r24.4-linux.tgz
   - tar -xvf android-sdk_r24.4-linux.tgz
   - export ANDROID_HOME=$PWD/android-sdk-linux
   - export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/23.0.2
-  - android list sdk --extended
-  # - android list sdk -a --extended
-  # - pushd $ANDROID_HOME/tools; popd
-  - echo y | android update sdk -u -a -f -t tools,platform-tools,build-tools-26.0.1,android-16,android-26
+  - android list sdk --extended # && android list sdk -a --extended
+  - FILTER=tools,platform-tools,build-tools-26.0.1,android-16,android-26
+  - ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk -u -a -f -t ${FILTER}
+  # - echo y | android update sdk -u -a -f -t ${FILTER}
 
 install:
   - npm install -g gulp bower cordova ionic
@@ -84,14 +70,8 @@ install:
   - ionic cordova prepare --verbose
   # - ionic cordova platform add android
 
-before_script:
-  # - ionic cordova platform rm android
-  # - ionic cordova platform add android
-  # - ionic cordova prepare
-  # - cordova prepare
-
 script:
-  - ionic cordova build android --verbose || cordova build android --verbose
+  - ionic cordova build android --verbose
 
 # deploy:
 #   provider: releases
