@@ -67,9 +67,30 @@ install:
 
 script:
   - echo 'script run...'; echo -en 'travis_fold:start:script.1\\r'; SECONDS=0
-  -   ionic cordova build android #--verbose
+
+  -   ionic cordova build android # --verbose
+
+  # -   ionic cordova build android &
+
+  ### Release build:
+  # #     # keystore    CN=Your name, OU=OrgUnit, O=Org, L=city/Locality, S=STate/province, C=Country code
+  # -     keystoreFile=ikarus512-trackSave.keystore; keystoreAlias=ikarus512trackSave; storePassword=1211243; keyPassword=123ljNjl; keystoreValidity=10000 # days
+  # -     keytool -genkey -v -noprompt -alias $keystoreAlias -keystore $keystoreFile -storepass $storePassword -keypass $keyPassword -keyalg RSA -keysize 2048 -validity $keystoreValidity -dname "CN=ikarus512, OU=ikarus512, O=HSH, L=NN, S=RU, C=RU"
+  # # -   ionic cordova plugin rm cordova-plugin-console
+  # # -   ionic cordova build android --release -- --keystore=$keystoreFile --alias=$keystoreAlias --storePassword=$storePassword --password=$keyPassword
+  # # -   ionic cordova build android --release
+  # # -   jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore $keystoreFile android-armv7-release-unsigned.apk $keystoreAlias
+  # # -   jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore $keystoreFile android-x86-release-unsigned.apk $keystoreAlias
+  # - pushd platforms/android/build/outputs/apk
+  # -   jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ../../../../../$keystoreFile android-armv7-release-unsigned.apk $keystoreAlias -storepass $storePassword -keypass $keyPassword
+  # -   jarsigner -verify android-armv7-release-unsigned.apk $keystoreAlias
+  # #   C:\Apps\AndroidSDK\build-tools\25.0.2\zipalign
+  # #   /c/Apps/AndroidSDK/build-tools/25.0.2/zipalign -v 4 android-armv7-release-unsigned.apk trackSave-armv7.apk
+  # - popd
+
   - duration=$SECONDS; echo -en 'travis_fold:end:script.1\\r'
   - echo "script run $(($duration / 60))m $(($duration % 60))s"
+  - ls platforms/android/build/outputs/apk
 
 # build cache to preserve files/folders between builds
 cache: # disable cache to see 'npm install' warnings
