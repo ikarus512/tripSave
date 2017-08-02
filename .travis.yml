@@ -44,11 +44,7 @@ git:
   depth: 5
 
 before_install:
-  # - nvm install 6 # install node_js 6
   - npm i -g npm
-  - node --version
-  - npm --version
-  - nvm --version
 
   ### Unpack ssh key for git
   # - echo -n $id_rsa_{00..30} >> ~/.ssh/id_rsa_base64
@@ -83,11 +79,8 @@ cache: # disable cache to see 'npm install' warnings
   - node_modules
   - platforms
   - plugins
-  # - $(npm config get prefix) # subpath of $NVM_DIR
-
-  # Only one of further (sdk or nvm) fit cache:
   - android-sdk-linux
-  - $NVM_DIR
+  - $NVM_DIR # $(npm config get prefix)
 
 # deploy:
 #   provider: releases
