@@ -54,40 +54,21 @@ before_install:
   # # Disable SSH server fingerprint verification
   # - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 
-  # ### Set up android build environment
-  # # - sudo apt-get update -qq
-  # # - if [ `uname -m` = x86_64 ]; then sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confnew" install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch; fi
-
   ### Set up android build environment
-  - set | grep -P "^\w+\s*=" || echo ' '
-  - wget http://dl.google.com/android/android-sdk_r24.4-linux.tgz
-  - tar -xvf android-sdk_r24.4-linux.tgz
   - export ANDROID_HOME=$PWD/android-sdk-linux
   - export ANDROID_SDK=$ANDROID_HOME
   - export PATH=$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/23.0.2:${PATH}
+  # - set | grep -P "^\w+\s*=" || echo ' '
+  - if [ ! -e android-sdk-linux ];then    wget http://dl.google.com/android/android-sdk_r24.4-linux.tgz;    tar -xvf android-sdk_r24.4-linux.tgz; fi
   # - android list sdk --extended # && android list sdk -a --extended
-
+  - ANDROPACKS=tools,platform-tools,build-tools-26.0.1,android-16,android-26
+  - if [ ! -e android-sdk-linux ];then    ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk -u -a -f -t ${ANDROPACKS}; fi
+  ### Accept licenses:
   # - mkdir $ANDROID_HOME/licenses
   # - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
   # - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
-
-  - ANDROPACKS=tools,platform-tools,build-tools-26.0.1,android-16,android-26
-  - ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk -u -a -f -t ${ANDROPACKS}
-  # - echo y | android update sdk -u -a -f -t ${ANDROPACKS}
-
-  # - echo y | sdkmanager --licenses || echo ' '
-  # - echo y | sdkmanager "build-tools;26.0.1"
-
-  - echo y | sdkmanager --update #that requests us to accept a license for the sdkmanager, and then
-  - echo y | sdkmanager --licenses #that requests us to accept new licenses not previously accepted
-
-  # - wget https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip
-  # - mkdir sdk-tools-linux
-  # - unzip sdk-tools-linux-3859397.zip -d sdk-tools-linux
-  # - chmod -R 777 sdk-tools-linux
-  # - export ANDROID_HOME=$PWD/sdk-tools-linux
-  # - export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/23.0.2
-  # - sdkmanager "tools,platform-tools,build-tools-26.0.1,android-16,android-26"
+  # That requests us to accept a license for the sdkmanager, and then requests us to accept new licenses not previously accepted:
+  - if [ ! -e android-sdk-linux ];then    echo y | sdkmanager --update; ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | sdkmanager --licenses; fi
 
 install:
   - npm install -g gulp bower cordova ionic
@@ -95,13 +76,13 @@ install:
   - bower update
 
   - chmod +x hooks/after_prepare/010_add_platform_class.js
-  - ionic cordova prepare --verbose
+  - if [ ! -e platforms ];then    ionic cordova prepare; fi   #--verbose
   # - ionic cordova platform add android
 
 script:
-  - set | grep -P "^\w+\s*=" || echo ' '
-  - which android || echo ' '
-  - ionic cordova build android --verbose
+  # - set | grep -P "^\w+\s*=" || echo ' '
+  # - which android || echo ' '
+  - ionic cordova build android #--verbose
 
 # build cache to preserve files/folders between builds
 cache: # disable cache to see 'npm install' warnings
@@ -109,6 +90,7 @@ cache: # disable cache to see 'npm install' warnings
   - node_modules
   - platforms
   - plugins
+  - android-sdk-linux
 
 # deploy:
 #   provider: releases
