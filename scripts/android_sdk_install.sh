@@ -1,4 +1,8 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
+
+export ANDROID_HOME=$PWD/android-sdk-linux
+export ANDROID_SDK=$ANDROID_HOME
+export PATH=$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/23.0.2:${PATH}
 
 if [ ! -e android-sdk-linux/tools/bin/sdkmanager ];then
 

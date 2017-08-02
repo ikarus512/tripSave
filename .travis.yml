@@ -55,16 +55,13 @@ before_install:
   # - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 
   ### Set up android build environment
-  - export ANDROID_HOME=$PWD/android-sdk-linux
-  - export ANDROID_SDK=$ANDROID_HOME
-  - export PATH=$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/23.0.2:${PATH}
-  - ./scripts/android_sdk_install.sh
+  - source ./scripts/android_sdk_install.sh
 
 install:
   - npm install -g gulp bower cordova ionic
   - npm install
   - bower update
-  - ./scripts/ionic_cordova_prepare.sh
+  - source ./scripts/ionic_cordova_prepare.sh
 
 script:
   - ionic cordova build android #--verbose
