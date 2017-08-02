@@ -73,6 +73,7 @@ cache: # disable cache to see 'npm install' warnings
   - platforms
   - plugins
   - android-sdk-linux
+  - $(npm config get prefix)
 
 # deploy:
 #   provider: releases
