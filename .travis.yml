@@ -72,7 +72,7 @@ cache: # disable cache to see 'npm install' warnings
   - node_modules
   - platforms
   - plugins
-  # - android-sdk-linux
+  - android-sdk-linux
 
 # deploy:
 #   provider: releases
