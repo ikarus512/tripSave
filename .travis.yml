@@ -22,8 +22,7 @@ sudo: false
 #     - 'google-gdk-license-.+'
 
 language: node_js
-node_js:
-  - "6"
+# node_js: "6"
 
 addons:
   apt:
@@ -45,7 +44,11 @@ git:
   depth: 5
 
 before_install:
+  - nvm install 6 # install node_js 6
   - npm i -g npm
+  - node --version
+  - npm --version
+  - nvm --version
 
   ### Unpack ssh key for git
   # - echo -n $id_rsa_{00..30} >> ~/.ssh/id_rsa_base64
