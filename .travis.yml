@@ -66,8 +66,8 @@ before_install:
   - tar -xvf android-sdk_r24.4-linux.tgz
   - export ANDROID_HOME=$PWD/android-sdk-linux
   - export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/23.0.2
-  - android list sdk -all
-  - android list sdk -all --extended
+  - android list sdk -a || android list sdk
+  - android list sdk --extended
   - android update sdk -u -a -t -f platform-tools
   - android update sdk -u -a -t -f build-tools-23.0.2
   - android update sdk -u -a -t -f android-16
