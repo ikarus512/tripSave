@@ -58,22 +58,16 @@ before_install:
   # # - if [ `uname -m` = x86_64 ]; then sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confnew" install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch; fi
 
   ### Set up android build environment
+  - which android
   - wget http://dl.google.com/android/android-sdk_r24.4-linux.tgz
   - tar -xvf android-sdk_r24.4-linux.tgz
   - export ANDROID_HOME=$PWD/android-sdk-linux
-  - export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/23.0.2
-  - android list sdk --extended # && android list sdk -a --extended
-
-  - FILTER=tools,platform-tools,build-tools-26.0.1,android-16,android-26
-  - ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk -u -a -f -t ${FILTER}
-  - ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk -u -a -f -t ${FILTER}
-  # - echo y | android update sdk -u -a -f -t ${FILTER}
-
-  # - echo y | android update sdk -u -a -f -t tools
-  # - echo y | android update sdk -u -a -f -t platform-tools
-  # - echo y | android update sdk -u -a -f -t build-tools-26.0.1
-  # - echo y | android update sdk -u -a -f -t android-16
-  # - echo y | android update sdk -u -a -f -t android-26
+  - export PATH=$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/23.0.2:${PATH}
+  - which android
+  # - android list sdk --extended # && android list sdk -a --extended
+  - ANDROPACKS=tools,platform-tools,build-tools-26.0.1,android-16,android-26
+  - ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk -u -a -f -t ${ANDROPACKS}
+  # - echo y | android update sdk -u -a -f -t ${ANDROPACKS}
 
   # - wget https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip
   # - mkdir sdk-tools-linux
