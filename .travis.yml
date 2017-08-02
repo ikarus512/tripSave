@@ -66,13 +66,14 @@ install:
   - bower update
   - source ./scripts/ionic_cordova_prepare.sh
 
-before_script:
-  - npm config get prefix
-  - set | grep -P "^\w+="
-  - set | grep -P "^\w+=.*/home/travis"
+# before_script:
+#   - npm config get prefix
+#   - set | grep -P "^\w+="
+#   - set | grep -P "^\w+=.*/home/travis"
 
 script:
-  - echo 'Run script...' && echo -en 'travis_fold:start:script.1\\r'
+  - echo 'Run script...'
+  - echo -en 'travis_fold:start:script.1\\r'
   - ionic cordova build android #--verbose
   - echo -en 'travis_fold:end:script.1\\r'
 
@@ -82,7 +83,7 @@ cache: # disable cache to see 'npm install' warnings
   - node_modules
   - platforms
   - plugins
-  - android-sdk-linux
+  # - android-sdk-linux
   - $NVM_DIR # $(npm config get prefix)
 
 # deploy:
