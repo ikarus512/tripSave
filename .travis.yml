@@ -76,7 +76,8 @@ before_install:
 
   - wget https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip
   - unzip --help
-  - unzip sdk-tools-linux-3859397.zip sdk-tools-linux/
+  - mkdir sdk-tools-linux
+  - unzip sdk-tools-linux-3859397.zip -d sdk-tools-linux
   - chmod -R 777 sdk-tools-linux
   - pwd
   - ls
