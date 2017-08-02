@@ -72,9 +72,9 @@ before_script:
   - set | grep -P "^\w+=.*/home/travis"
 
 script:
-  - echo "travis_fold:start:SCRIPT folding starts"
+  - echo 'Run script...' && echo -en 'travis_fold:start:script.1\\r'
   - ionic cordova build android #--verbose
-  - echo "travis_fold:end:SCRIPT folding ends"
+  - echo -en 'travis_fold:end:script.1\\r'
 
 # build cache to preserve files/folders between builds
 cache: # disable cache to see 'npm install' warnings
