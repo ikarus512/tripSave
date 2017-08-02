@@ -1,11 +1,8 @@
 # Travis CI file
 
 # https://docs.travis-ci.com/user/languages/javascript-with-nodejs
-# https://github.com/svenlaater/travis-ci-ionic-yml
 
 sudo: false
-# sudo: required
-dist: trusty
 
 ### https://docs.travis-ci.com/user/languages/android/
 # language: android
