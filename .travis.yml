@@ -47,16 +47,31 @@ before_install:
   # # Disable SSH server fingerprint verification
   # - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 
+  # ### Set up android build environment
+  # # - sudo apt-get update -qq
+  # # - if [ `uname -m` = x86_64 ]; then sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confnew" install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch; fi
+  # - wget http://dl.google.com/android/android-sdk_r21.0.1-linux.tgz
+  # - tar xzf android-sdk_r21.0.1-linux.tgz
+  # - export ANDROID_HOME=$PWD/android-sdk-linux
+  # - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+  # - android list sdk
+  # - android update sdk --filter platform-tools,android-16,android-25,extra-android-support --no-ui --force
+  # - git submodule update --init --recursive
+
   ### Set up android build environment
-  # - sudo apt-get update -qq
-  # - if [ `uname -m` = x86_64 ]; then sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confnew" install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch; fi
-  - wget http://dl.google.com/android/android-sdk_r21.0.1-linux.tgz
-  - tar xzf android-sdk_r21.0.1-linux.tgz
+  - wget http://dl.google.com/android/android-sdk_r24.4-linux.tgz
+  - tar -xvf android-sdk_r24.4-linux.tgz
   - export ANDROID_HOME=$PWD/android-sdk-linux
-  - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+  - export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/23.0.2
   - android list sdk
-  - android update sdk --filter platform-tools,android-16,android-25,extra-android-support --no-ui --force
-  - git submodule update --init --recursive
+  - echo y | android update sdk --no-ui --all --filter platform-tools
+  - echo y | android update sdk --no-ui --all --filter build-tools-23.0.2
+  - echo y | android update sdk -u --filter android-16
+  - echo y | android update sdk --no-ui --all --filter android-23
+  - echo y | android update sdk --no-ui --all --filter extra-android-support
+  - echo y | android update sdk --no-ui --all --filter extra-android-m2repository
+  - echo y | android update sdk --no-ui --all --filter extra-google-m2repository
+
 
 install:
   - npm install -g gulp bower cordova ionic
@@ -68,25 +83,13 @@ install:
   # - ionic cordova platform add android
 
 before_script:
-  # - wget http://dl.google.com/android/android-sdk_r24.4-linux.tgz
-  # - tar -xvf android-sdk_r24.4-linux.tgz
-  # - echo y | ./android-sdk-linux/tools/android update sdk --no-ui --all --filter platform-tools
-  # - echo y | ./android-sdk-linux/tools/android update sdk --no-ui --all --filter build-tools-23.0.2
-  # - echo y | android update sdk -u --filter android-16
-  # - echo y | ./android-sdk-linux/tools/android update sdk --no-ui --all --filter android-23
-  # - echo y | ./android-sdk-linux/tools/android update sdk --no-ui --all --filter extra-android-support
-  # - echo y | ./android-sdk-linux/tools/android update sdk --no-ui --all --filter extra-android-m2repository
-  # - echo y | ./android-sdk-linux/tools/android update sdk --no-ui --all --filter extra-google-m2repository
-  # - export ANDROID_HOME=$PWD/android-sdk-linux
-  # - export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/23.0.2
-
   # - ionic cordova platform rm android
   # - ionic cordova platform add android
   # - ionic cordova prepare
   # - cordova prepare
 
 script:
-  - ionic cordova build android --verbose
+  - ionic cordova build android --verbose || cordova build android --verbose
 
 # deploy:
 #   provider: releases
