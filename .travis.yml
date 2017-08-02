@@ -71,9 +71,9 @@ before_install:
   - export ANDROID_HOME=$PWD/android-sdk-linux
   - export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/23.0.2
   - android list sdk --extended
-  - android list sdk -a --extended
+  # - android list sdk -a --extended
   # - pushd $ANDROID_HOME/tools; popd
-  - android update sdk -u -a -f -t tools,platform-tools,build-tools-26.0.1,android-16,android-26
+  - echo y | android update sdk -u -a -f -t tools,platform-tools,build-tools-26.0.1,android-16,android-26
 
 install:
   - npm install -g gulp bower cordova ionic
