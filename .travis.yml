@@ -67,6 +67,7 @@ before_install:
   - export ANDROID_HOME=$PWD/android-sdk-linux
   - export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/23.0.2
   - android list sdk -all
+  - android list sdk -all --extended
   - android update sdk -u -a -t -f platform-tools
   - android update sdk -u -a -t -f build-tools-23.0.2
   - android update sdk -u -a -t -f android-16
