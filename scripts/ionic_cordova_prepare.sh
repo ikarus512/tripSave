@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 chmod -R +x hooks
+chmod -R +x scripts
 
 if [ ! -e platforms ];then
 

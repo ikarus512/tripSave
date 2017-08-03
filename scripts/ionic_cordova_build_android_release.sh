@@ -10,7 +10,7 @@ if [ -z $zipalign ];then zipalign=$ANDROID_HOME1/build-tools/25.0.2/zipalign; fi
 # ionic cordova build android --release -- --keystore=$keystoreFile --alias=$keystoreAlias --storePassword=$storePassword --password=$keyPassword
 ionic cordova build android --release || exit 1
 
-pushd platforms/android/build/outputs/apk
+pushd platforms/android/build/outputs/apk || exit 1
 
     ### keystore:    CN=Your name, OU=OrgUnit, O=Org, L=city/Locality, S=STate/province, C=Country code
     keystoreFile=ikarus512-$myappname.keystore

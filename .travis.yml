@@ -61,6 +61,7 @@ install:
   - npm install
   - bower update
   - source ./scripts/ionic_cordova_prepare.sh
+  - ionic cordova platform add android
 
 # before_script:
 #   - npm config get prefix
@@ -69,7 +70,7 @@ install:
 
 script:
   - echo 'script run...'; SECONDS=0; echo -en 'travis_fold:start:script.1\\r'
-  -   bash scripts/ionic_cordova_build_android.sh
+  -   scripts/ionic_cordova_build_android.sh
   - echo -en 'travis_fold:end:script.1\\r'; duration=$SECONDS; echo "script run $(($duration / 60))m $(($duration % 60))s"
   - ls platforms/android/build/outputs/apk
 
