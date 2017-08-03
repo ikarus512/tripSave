@@ -2,25 +2,9 @@
 
 # https://docs.travis-ci.com/user/languages/javascript-with-nodejs
 
-sudo: false
-
-### https://docs.travis-ci.com/user/languages/android/
-# language: android
-# jdk: oraclejdk8
-# android:
-#   components:
-#   # - tools
-#   # - platform-tools
-#   - build-tools-26.0.1
-#   - android-16
-#   - android-26
-#   licenses:
-#     - 'android-sdk-preview-license-.+'
-#     - 'android-sdk-license-.+'
-#     - 'google-gdk-license-.+'
-
 language: node_js
 node_js: "6"
+sudo: false
 
 addons:
   apt:
@@ -31,14 +15,15 @@ addons:
     - openjdk-7-jdk
     - lib32stdc++6
     - lib32z1
+
 env:
   global:
     - CXX=g++-4.8
     - ANDROID_HOME=$TRAVIS_BUILD_DIR/android-sdk-linux
     - zipalign=$ANDROID_HOME/build-tools/26.0.1/zipalign
   matrix:
-    - BUILD_SCRIPT=script/ionic_cordova_build_android_debug.sh
-    - BUILD_SCRIPT=script/ionic_cordova_build_android_release.sh
+    - BUILD_SCRIPT=scripts/ionic_cordova_build_android_debug.sh
+    - BUILD_SCRIPT=scripts/ionic_cordova_build_android_release.sh
 
 branches:
   only:
@@ -49,6 +34,7 @@ git:
 before_install:
   - npm i -g npm
   - npm --version
+  - source ./scripts/android_sdk_install.sh
 
   ### Unpack ssh key for git
   # - echo -n $id_rsa_{00..30} >> ~/.ssh/id_rsa_base64
@@ -57,30 +43,19 @@ before_install:
   # # Disable SSH server fingerprint verification
   # - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 
-  ### Set up android build environment
-  - source ./scripts/android_sdk_install.sh
-
 install:
   - npm install -g gulp bower cordova ionic
   - npm install
   - bower update
   - source ./scripts/ionic_cordova_prepare.sh
-  - ionic cordova platform add android
-
-# before_script:
-#   - npm config get prefix
-#   - set | grep -P "^\w+="
-#   - set | grep -P "^\w+=.*/home/travis"
 
 script:
   - echo '$BUILD_SCRIPT'; SECONDS=0; echo -en 'travis_fold:start:script.1\\r'
   -   $BUILD_SCRIPT
-  # -   scripts/ionic_cordova_build_android.sh
   - echo -en 'travis_fold:end:script.1\\r'; duration=$SECONDS; echo "script run $(($duration / 60))m $(($duration % 60))s"
   - ls platforms/android/build/outputs/apk
 
-# build cache to preserve files/folders between builds
-cache: # disable cache to see 'npm install' warnings
+cache:
   directories:
   - node_modules
   - platforms

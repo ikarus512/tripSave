@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 
-#https://unix.stackexchange.com/questions/122460/bash-how-to-let-some-background-processes-run-but-wait-for-others
-
 myappname=tripSave
 if [ -z $zipalign ];then zipalign=$ANDROID_HOME1/build-tools/25.0.2/zipalign; fi
 
-### Release build:
-# ionic cordova plugin rm cordova-plugin-console
-# ionic cordova build android --release -- --keystore=$keystoreFile --alias=$keystoreAlias --storePassword=$storePassword --password=$keyPassword
+### remove debug plugins
+ionic cordova plugin rm cordova-plugin-console
+
+### build
 ionic cordova build android --release || exit 1
 
+### sign
 pushd platforms/android/build/outputs/apk || exit 1
 
     ### keystore:    CN=Your name, OU=OrgUnit, O=Org, L=city/Locality, S=STate/province, C=Country code

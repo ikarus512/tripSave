@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+echo "ERROR: cordova cannot build debug and release in parallel in same place!"
+exit
+
+
+#https://unix.stackexchange.com/questions/122460/bash-how-to-let-some-background-processes-run-but-wait-for-others
+
 apkdir=platforms/android/build/outputs/apk
 if [ -e $apkdir ];then
     ls $apkdir

@@ -5,6 +5,9 @@ chmod -R +x scripts
 
 if [ ! -e platforms ];then
 
-    ionic cordova prepare || exit 1 #--verbose
+    ionic cordova prepare || exit 1
+    # ionic cordova prepare --verbose || exit 1
+
+    ionic cordova platform add android || exit 1
 
 fi
