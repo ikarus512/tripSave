@@ -76,22 +76,14 @@ cache:
 #   on:
 #     tags: true
 
-# #https://github.com/floydpink/Mantis-CI/blob/master/.travis.yml:
-# after_script:
-#   - mkdir tempclone
-#   - cd tempclone
-#   - git clone $REPO.git Mantis-CI
-#   - cd Mantis-CI
-#   - git config user.email "imbleedingme@googlemail.com"
-#   - git config user.name "Floyd Pink"
-#   - cp ../../bin/MantisCI-release.apk deploy/ -f
-#   - git add .
-#   - git commit -a -m "Committed from CI (build number - $((TRAVIS_JOB_ID - 1))) [ci skip]"
-#   - git push origin master
-# env:
-#   global:
-#     # Repo read-write address
-#     - REPO="git@github.com:floydpink/Mantis-CI"
-#     # SSH key. Encoded. See https://gist.github.com/4631240
-#     - secure: "Cq2JLLOoLRUqz7YETnSk2pysaIVxbuxuS+hamqmPN24ImHf4myrWm3THq37s\n1TWn4UBDKPRxZPdllzMTeFSSHxXCKUW4sQBhGogkv1Qf2TY2iliv08rf+pXc\nL7xgqkQE4eYizqsWi9+yWo3NHi6gYLe7nIufEaJtIe08kOmoLcI="
-#     - secure: "I2pEXbp+k3Kgi1p8wQhsmqHTUn+mC54Ey/aDHXYTb4+sarDwifsSE45l/gca\nwlbRjU6vU4TO/paxgbFfDDok5E28pu7vuMxS+ooSaQiWCwC6wtBS03gG+KnY\n5fid8AouVCLs8GC4HMhGG8xK70mgSnrG6/z8K0nEDmV3vQpWPVI="
+deploy:
+  provider: releases # GitHub releases
+  api_key:
+    secure: RpuHxPQOnlJsTDyonHEVv4Rvnylk+9t4mOHytxSU8S9odjdvbimr4bvYpsYvHDxXIEMy/eqoMoJJug2NoeKZ685wW6SJ3pOvAt0qxkrUW+IsSUZQjKpAbHXbnoOJOEhSbVvSMW1ij2j9t9njAMWZsz+0CsF2JCvpts459K6yk2m/mlhkpuA7wUqcnut2jnhvEKYc5TsliSa9leLaSYbIRJsyYiUC8wk6dD2Dzs2eDn0+dQsvJax+Db8KAUkeV5tRkxXiPz68u95HkoPpaVXB+QtzgSbBANs5eoEFWLEkDH7cPvX40mtrjDLAy0seEkqup9OuesxcGKBKX/FS5oobHi7/wZn67iZ1Hw/GlAUw5OCHOxrA2ncyeNe+ENWb2a31uWwLlOwtS2XpjPCdxZmVq4w1EGWZaeoWY+Ma16B289XtmCLlbV2NN20qEIG5eHx5q4dGRnI+1l+jV2qecZC80w6QieMqFOZmCMec7L3llJteKa7QNhMR7oj1gmT94dBT+ZxA22WC8D/5GxR+017Q03NYYSs2//kKVWOeuKlk1OJ10tP/w2j0LWwVzrbI4ltkkKRZ+Xp4s3mExbPk3LnU+kqfKHWaj5WGzZ4hmHNGQVD2j5nNCgLQkA46f1Lz5EHgmdeYl9SZ+4RfLXIHHA2NzDnNa5q0pLC8pry6NiVVhPw=
+  file:
+    - platforms/android/build/outputs/apk/tripSave-debug.apk
+    - platforms/android/build/outputs/apk/tripSave-debug-x86.apk
+    - platforms/android/build/outputs/apk/tripSave.apk
+    - platforms/android/build/outputs/apk/tripSave-x86.apk
+  on:
+    repo: ikarus512/tripSave
