@@ -85,5 +85,8 @@ deploy:
     - platforms/android/build/outputs/apk/tripSave-debug-x86.apk
     - platforms/android/build/outputs/apk/tripSave.apk
     - platforms/android/build/outputs/apk/tripSave-x86.apk
+  # overwrite: true
+  # skip_cleanup: true
   on:
     repo: ikarus512/tripSave
+    # tags: true
