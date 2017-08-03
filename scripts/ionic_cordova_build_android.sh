@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
 
+ls platforms/android/build/outputs/apk
+rm -f platforms/android/build/outputs/apk/*.apk
+rm -f platforms/android/build/outputs/apk/*.keystore
+ls platforms/android/build/outputs/apk
+
 tmp1=$(mktemp)
 tmp2=$(mktemp)
-(scripts/ionic_cordova_build_android_debug.sh >tmp.build.debug.txt 2>&1; echo $? >"$tmp1") &
+(bash scripts/ionic_cordova_build_android_debug.sh >tmp.build.debug.txt 2>&1; echo $? >"$tmp1") &
 pid1=$!
-(scripts/ionic_cordova_build_android_release.sh >tmp.build.release.txt 2>&1 ; echo $? >"$tmp2") &
+(bash scripts/ionic_cordova_build_android_release.sh >tmp.build.release.txt 2>&1 ; echo $? >"$tmp2") &
 pid2=$!
 wait "$pid1" "$pid2"
 
