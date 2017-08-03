@@ -6,9 +6,6 @@ if [ -z $zipalign ];then zipalign=$ANDROID_HOME1/build-tools/25.0.2/zipalign; fi
 ### remove debug plugins
 ionic cordova plugin rm cordova-plugin-console
 
-rm -fv platforms/android/build/outputs/apk/*release*.apk
-rm -fv platforms/android/build/outputs/apk/*.keystore
-
 ### build
 ionic cordova build android --release || exit 1
 
