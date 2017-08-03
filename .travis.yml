@@ -55,6 +55,7 @@ script:
   - echo -en 'travis_fold:end:script.1\\r'
   - duration=$SECONDS; echo "script run $(($duration / 60))m $(($duration % 60))s"
   - ls platforms/android/build/outputs/apk
+  - ls releases
 
 cache:
   timeout: 300 # 5*60 seconds
@@ -64,17 +65,6 @@ cache:
   - plugins
   - android-sdk-linux
   - $NVM_DIR # $(npm config get prefix)
-
-# deploy:
-#   provider: releases
-#   api_key:
-#     secure: YOUR_API_KEY_ENCRYPTED
-#   file:
-#     - "platforms/android/build/outputs/apk/android-armv7-debug.apk"
-#     - "platforms/android/build/outputs/apk/android-x86-debug.apk"
-#   skip_cleanup: true
-#   on:
-#     tags: true
 
 deploy:
   provider: releases # GitHub releases
@@ -86,7 +76,8 @@ deploy:
     - platforms/android/build/outputs/apk/tripSave.apk
     - platforms/android/build/outputs/apk/tripSave-x86.apk
   # overwrite: true
-  # skip_cleanup: true
+  skip_cleanup: true
   on:
     repo: ikarus512/tripSave
+    # branch: master
     # tags: true
