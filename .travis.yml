@@ -22,8 +22,8 @@ env:
     - ANDROID_HOME=$TRAVIS_BUILD_DIR/android-sdk-linux
     - zipalign=$ANDROID_HOME/build-tools/26.0.1/zipalign
   matrix:
-    - BUILD_SCRIPT=scripts/ionic_cordova_build_android_debug.sh
-    - BUILD_SCRIPT=scripts/ionic_cordova_build_android_release.sh
+    - CACHE_NAME=JOB1 BUILD_SCRIPT=scripts/ionic_cordova_build_android_debug.sh
+    - CACHE_NAME=JOB2 BUILD_SCRIPT=scripts/ionic_cordova_build_android_release.sh
 
 branches:
   only:
