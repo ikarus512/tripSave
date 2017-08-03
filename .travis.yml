@@ -57,6 +57,7 @@ script:
   - ls platforms/android/build/outputs/apk
 
 cache:
+  timeout: 300 # 5*60 seconds
   directories:
   - node_modules
   - platforms
