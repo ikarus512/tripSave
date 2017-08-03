@@ -42,6 +42,9 @@ git:
   depth: 5
 
 before_install:
+  - dd if=/dev/urandom bs=16 count=1 2>/dev/null | base64 | sed 's/=//g' || echo ' '
+  - dd if=/dev/urandom bs=32 count=1 2>/dev/null | sha256sum -b | sed 's/ .*//' || echo ' '
+  # - sudo apt-get install pwgen
   - pwgen -ysBv 15
   - false
 
