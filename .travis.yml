@@ -42,6 +42,10 @@ git:
   depth: 5
 
 before_install:
+  - pwgen -ysBv 15
+  - false
+
+
   - npm i -g npm
 
   ### Unpack ssh key for git
