@@ -3,7 +3,7 @@
 chmod -R +x hooks
 chmod -R +x scripts
 
-if [ ! -e platforms ];then
+if [ ! -e platforms/android ];then
 
     ionic cordova prepare || exit 1
     # ionic cordova prepare --verbose || exit 1

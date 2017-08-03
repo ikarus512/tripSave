@@ -51,7 +51,7 @@ install:
 
 script:
   - echo '$BUILD_SCRIPT'; SECONDS=0; echo -en 'travis_fold:start:script.1\\r'
-  -   $BUILD_SCRIPT
+  -       $BUILD_SCRIPT
   - echo -en 'travis_fold:end:script.1\\r'
   - duration=$SECONDS; echo "script run $(($duration / 60))m $(($duration % 60))s"
   - ls platforms/android/build/outputs/apk
