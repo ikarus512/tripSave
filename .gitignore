@@ -67,3 +67,4 @@ platforms/
 plugins/
 package-lock.json
 *.keystore
+releases/
