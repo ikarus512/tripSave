@@ -68,8 +68,8 @@ install:
 #   - set | grep -P "^\w+=.*/home/travis"
 
 script:
-  - echo -en 'travis_fold:start:script.1\\r'; echo 'script run...'; SECONDS=0
-  -   scripts/ionic_cordova_build_android.sh
+  - echo 'script run...'; SECONDS=0; echo -en 'travis_fold:start:script.1\\r'
+  -   bash scripts/ionic_cordova_build_android.sh
   - echo -en 'travis_fold:end:script.1\\r'; duration=$SECONDS; echo "script run $(($duration / 60))m $(($duration % 60))s"
   - ls platforms/android/build/outputs/apk
 
