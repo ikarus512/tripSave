@@ -32,9 +32,13 @@ addons:
     - lib32stdc++6
     - lib32z1
 env:
-  CXX=g++-4.8
-  ANDROID_HOME=$TRAVIS_BUILD_DIR/android-sdk-linux
-  zipalign=$ANDROID_HOME/build-tools/26.0.1/zipalign
+  global:
+    - CXX=g++-4.8
+    - ANDROID_HOME=$TRAVIS_BUILD_DIR/android-sdk-linux
+    - zipalign=$ANDROID_HOME/build-tools/26.0.1/zipalign
+  matrix:
+    - BUILD_SCRIPT=script/ionic_cordova_build_android_debug.sh
+    - BUILD_SCRIPT=script/ionic_cordova_build_android_release.sh
 
 branches:
   only:
@@ -69,8 +73,9 @@ install:
 #   - set | grep -P "^\w+=.*/home/travis"
 
 script:
-  - echo 'script run...'; SECONDS=0; echo -en 'travis_fold:start:script.1\\r'
-  -   scripts/ionic_cordova_build_android.sh
+  - echo '$BUILD_SCRIPT'; SECONDS=0; echo -en 'travis_fold:start:script.1\\r'
+  -   $BUILD_SCRIPT
+  # -   scripts/ionic_cordova_build_android.sh
   - echo -en 'travis_fold:end:script.1\\r'; duration=$SECONDS; echo "script run $(($duration / 60))m $(($duration % 60))s"
   - ls platforms/android/build/outputs/apk
 
