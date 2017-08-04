@@ -34,11 +34,10 @@ echo '=== git status'
 echo '=== git diff'
     git diff -w
 
-    git add hooks/*
-    git add scripts/*
-    git commit -m "[ci skip] update file attributes"
-    git push origin1 master
-    # git push -f -q https://ikarus512:$GITHUB_API_TOKEN@github.com/ikarus512/tripSave master
+    # git add hooks/*
+    # git add scripts/*
+    # git commit -m "[ci skip] update file attributes"
+    # git push origin1 master
 
 echo '=== git status'
     git status
