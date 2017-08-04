@@ -2,7 +2,7 @@
 
 if [ "$1" != JOB2 ];then exit; fi
 
-echo TRAVIS_BUILD_NUMBER=$TRAVIS_BUILD_NUMBER
+echo TRAVIS_BUILD_NUMBER=$TRAVIS_BUILD_NUMBER    p1=$1
 
 setup_git() {
   # git config --global user.email "travis@travis-ci.org"

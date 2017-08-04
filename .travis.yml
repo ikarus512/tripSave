@@ -59,6 +59,7 @@ script:
   - duration=$SECONDS; echo "script run $(($duration / 60))m $(($duration % 60))s"
   - ls platforms/android/build/outputs/apk
   - ls releases
+  - scripts/deploy_github_releases.sh $CACHE_NAME
 
 cache:
   timeout: 300 # 5*60 seconds
@@ -69,12 +70,12 @@ cache:
   - android-sdk-linux
   - $NVM_DIR # $(npm config get prefix)
 
-deploy:
-  provider: script
-  script: scripts/deploy_github_releases.sh $CACHE_NAME
-  skip_cleanup: true
-  on:
-    branch: master
+# deploy:
+#   provider: script
+#   script: scripts/deploy_github_releases.sh $CACHE_NAME
+#   skip_cleanup: true
+#   on:
+#     branch: master
 
 # deploy:
 #   provider: releases # GitHub releases
