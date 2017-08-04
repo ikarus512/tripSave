@@ -51,20 +51,18 @@ echo '=== Current major/minor version taken from package.json:'
     curMjMn=$(sed -nE 's/^[ \t]*"version": "([0-9]{1,}\.[0-9]{1,}\.)[0-9x]{1,}",$/\1/p' package.json)
     echo curMjMn=$curMjMn
 echo '=== Get the latest git tag (e.g. v1.2.43)'
-    #git describe --abbrev=0 || exit 1
-    git describe HEAD
-    git describe --always
-    git describe || exit 1
+    git describe
 echo '=== Get tag major/minor version and the patch version:'
-    tagMjMn=$(git describe --always | sed -E 's/^v([0-9]{1,}\.[0-9]{1,}\.)([0-9]{1,}).*$/\1/g')
-    tagPv=$(git describe --always | sed -E 's/^v([0-9]{1,}\.[0-9]{1,}\.)([0-9]{1,}).*$/\2/g')
+    tagMjMn=$(git describe | sed -E 's/^v([0-9]{1,}\.[0-9]{1,}\.)([0-9]{1,}).*$/\1/g')
+    tagPv=$(git describe | sed -E 's/^v([0-9]{1,}\.[0-9]{1,}\.)([0-9]{1,}).*$/\2/g')
     echo tagMjMn=$tagMjMn
     echo tagPv=$tagPv
+    if [ "$tagMjMn" == "" ];then $tagMjMn=$curMjMn; fi # if current commit not tagged
 echo '=== If curMjMn==tagMjMn, increment the patch version, otherwise use major.minor.0:'
     if [ "$curMjMn" == "$tagMjMn" ];then newPv=$(($tagPv+1)); else newPv=0; fi
     newVer=$tagMjMn$newPv
     echo newVer=$newVer
-echo '=== Save resulting version number into a git tag (e.g. v1.2.44):'
+echo '=== Save newVer into a git tag (e.g. v1.2.44):'
     git tag -a v$newVer -m "v$newVer travis-build-$TRAVIS_BUILD_NUMBER"
 
 echo '=== Update package.json based on the git tag'
