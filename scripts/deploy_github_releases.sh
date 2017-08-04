@@ -75,4 +75,11 @@ echo '=== git diff'
     git diff -w
 
 echo '=== git push --tags'
+    # git add hooks/*
+    # git add scripts/*
+    git add package.json
+    git commit -m "[ci skip] package.json version update"
+    # git commit -m "[ci skip] update file attributes"
+    # git push origin1 master
+
     git push origin1 master --tags || exit 1
