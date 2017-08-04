@@ -68,3 +68,4 @@ plugins/
 package-lock.json
 *.keystore
 releases/
+android-sdk-linux/
