@@ -2,6 +2,31 @@
 
 echo TRAVIS_BUILD_NUMBER=$TRAVIS_BUILD_NUMBER
 
+setup_git() {
+  git config --global user.email "travis@travis-ci.org"
+  git config --global user.name "Travis CI"
+}
+
+commit_website_files() {
+  git checkout -b gh-pages
+  git add . *.html
+  git commit --message "Travis build: $TRAVIS_BUILD_NUMBER"
+}
+
+upload_files() {
+  git remote add origin-pages https://${GH_TOKEN}@github.com/MVSE-outreach/resources.git > /dev/null 2>&1
+  git push --quiet --set-upstream origin-pages gh-pages
+}
+
+setup_git
+# commit_website_files
+# upload_files
+
+    git add hooks/*
+    git add scripts/*
+    git commit -m "[ci skip] update file attributes"
+    git push origin master
+
 echo '=== git status'
     git status
 echo '=== git diff'
@@ -24,7 +49,7 @@ echo '=== If curMjMn==tagMjMn, increment the patch version, otherwise use major.
     newVer=$tagMjMn$newPv
     echo newVer=$newVer
 echo '=== Save resulting version number into a git tag (e.g. v1.2.44):'
-    git tag -a v$newVer -m "v$newVer"
+    git tag -a v$newVer -m "v$newVer travis-build-$TRAVIS_BUILD_NUMBER"
 
 echo '=== Update package.json based on the git tag'
     npm --no-git-tag-version version from-git

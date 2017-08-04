@@ -66,6 +66,11 @@ node_modules/
 platforms/
 plugins/
 package-lock.json
+
 *.keystore
 releases/
 android-sdk-linux/
+www/lib/angular-animate/
+www/lib/angular-sanitize/
+www/lib/angular-ui-router/
+www/lib/angular/
