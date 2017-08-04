@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+if [ "$1" != JOB2 ];then exit; fi
+
 echo TRAVIS_BUILD_NUMBER=$TRAVIS_BUILD_NUMBER
 
 setup_git() {
@@ -7,10 +9,7 @@ setup_git() {
   # git config --global user.name "Travis CI"
   git config user.email "$MYEMAIL"
   git config user.name "ikarus512"
-  # git remote add gh-token "${GH_REF}"
-  # git remote add origin https://github.com/ikarus512/tripSave.git
   git remote rm origin
-  # git remote add origin https://${GITHUB_API_TOKEN}@github.com/ikarus512/tripSave.git
   git remote add origin https://ikarus512:${GITHUB_API_TOKEN}@github.com/ikarus512/tripSave.git
 }
 
@@ -29,10 +28,14 @@ setup_git
 # commit_website_files
 # upload_files
 
+echo '=== git status'
+    git status
+echo '=== git diff'
+    git diff -w
+
     git add hooks/*
     git add scripts/*
     git commit -m "[ci skip] update file attributes"
-
     git push origin master
     # @$GITHUB_API_TOKEN
     # git push -f -q https://ikarus512:$GITHUB_API_TOKEN@github.com/ikarus512/tripSave master
