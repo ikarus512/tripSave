@@ -5,12 +5,12 @@ if [ "$1" != JOB2 ];then exit; fi
 echo TRAVIS_BUILD_NUMBER=$TRAVIS_BUILD_NUMBER    p1=$1
 
 setup_git() {
-  # git config --global user.email "travis@travis-ci.org"
-  # git config --global user.name "Travis CI"
-  git config user.email "$MYEMAIL"
-  git config user.name "ikarus512"
-  git remote rm origin
-  git remote add origin https://ikarus512:${GITHUB_API_TOKEN}@github.com/ikarus512/tripSave.git
+  git config --global user.email "travis@travis-ci.org"
+  git config --global user.name "Travis CI"
+  # git config user.email "$MYEMAIL"
+  # git config user.name "ikarus512"
+  git remote rm origin1
+  git remote add origin1 https://ikarus512:${GITHUB_API_TOKEN}@github.com/ikarus512/tripSave.git
 }
 
 commit_website_files() {
@@ -36,7 +36,7 @@ echo '=== git diff'
     git add hooks/*
     git add scripts/*
     git commit -m "[ci skip] update file attributes"
-    git push origin master
+    git push origin1 master
     # @$GITHUB_API_TOKEN
     # git push -f -q https://ikarus512:$GITHUB_API_TOKEN@github.com/ikarus512/tripSave master
 
