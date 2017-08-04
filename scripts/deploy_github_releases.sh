@@ -5,12 +5,13 @@ if [ "$1" != JOB2 ];then exit; fi
 echo TRAVIS_BUILD_NUMBER=$TRAVIS_BUILD_NUMBER    p1=$1
 
 setup_git() {
-  git config --global user.email "travis@travis-ci.org"
-  git config --global user.name "Travis CI"
-  # git config user.email "$MYEMAIL"
-  # git config user.name "ikarus512"
+  # git config --global user.email "travis@travis-ci.org"
+  # git config --global user.name "Travis CI"
+  git config user.email "$MYEMAIL"
+  git config user.name "ikarus512"
   git remote rm origin1
   git remote add origin1 https://ikarus512:${GITHUB_API_TOKEN}@github.com/ikarus512/tripSave.git
+  git remote -v
 }
 
 commit_website_files() {
@@ -37,7 +38,6 @@ echo '=== git diff'
     git add scripts/*
     git commit -m "[ci skip] update file attributes"
     git push origin1 master
-    # @$GITHUB_API_TOKEN
     # git push -f -q https://ikarus512:$GITHUB_API_TOKEN@github.com/ikarus512/tripSave master
 
 echo '=== git status'
@@ -51,10 +51,12 @@ echo '=== Current major/minor version taken from package.json:'
     curMjMn=$(sed -nE 's/^[ \t]*"version": "([0-9]{1,}\.[0-9]{1,}\.)[0-9x]{1,}",$/\1/p' package.json)
     echo curMjMn=$curMjMn
 echo '=== Get the latest git tag (e.g. v1.2.43)'
-    git describe --abbrev=0 || exit 1
+    #git describe --abbrev=0 || exit 1
+    git describe || exit 1
+    git describe HEAD || exit 1
 echo '=== Get tag major/minor version and the patch version:'
-    tagMjMn=$(git describe --abbrev=0 | sed -E 's/^v([0-9]{1,}\.[0-9]{1,}\.)([0-9]{1,})$/\1/g')
-    tagPv=$(git describe --abbrev=0 | sed -E 's/^v([0-9]{1,}\.[0-9]{1,}\.)([0-9]{1,})$/\2/g')
+    tagMjMn=$(git describe | sed -E 's/^v([0-9]{1,}\.[0-9]{1,}\.)([0-9]{1,}).*$/\1/g')
+    tagPv=$(git describe | sed -E 's/^v([0-9]{1,}\.[0-9]{1,}\.)([0-9]{1,}).*$/\2/g')
     echo tagMjMn=$tagMjMn
     echo tagPv=$tagPv
 echo '=== If curMjMn==tagMjMn, increment the patch version, otherwise use major.minor.0:'
