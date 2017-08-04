@@ -78,10 +78,10 @@ cache:
 
 deploy:
   provider: script
-    script: deploy_github_releases.sh
-    skip_cleanup: true
-    on:
-      branch: master
+  script: deploy_github_releases.sh
+  skip_cleanup: true
+  on:
+    branch: master
 
 # deploy:
 #   provider: releases # GitHub releases
