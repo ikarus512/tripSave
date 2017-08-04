@@ -18,7 +18,6 @@ addons:
 
 env:
   global:
-    secure: RpuHxPQOnlJsTDyonHEVv4Rvnylk+9t4mOHytxSU8S9odjdvbimr4bvYpsYvHDxXIEMy/eqoMoJJug2NoeKZ685wW6SJ3pOvAt0qxkrUW+IsSUZQjKpAbHXbnoOJOEhSbVvSMW1ij2j9t9njAMWZsz+0CsF2JCvpts459K6yk2m/mlhkpuA7wUqcnut2jnhvEKYc5TsliSa9leLaSYbIRJsyYiUC8wk6dD2Dzs2eDn0+dQsvJax+Db8KAUkeV5tRkxXiPz68u95HkoPpaVXB+QtzgSbBANs5eoEFWLEkDH7cPvX40mtrjDLAy0seEkqup9OuesxcGKBKX/FS5oobHi7/wZn67iZ1Hw/GlAUw5OCHOxrA2ncyeNe+ENWb2a31uWwLlOwtS2XpjPCdxZmVq4w1EGWZaeoWY+Ma16B289XtmCLlbV2NN20qEIG5eHx5q4dGRnI+1l+jV2qecZC80w6QieMqFOZmCMec7L3llJteKa7QNhMR7oj1gmT94dBT+ZxA22WC8D/5GxR+017Q03NYYSs2//kKVWOeuKlk1OJ10tP/w2j0LWwVzrbI4ltkkKRZ+Xp4s3mExbPk3LnU+kqfKHWaj5WGzZ4hmHNGQVD2j5nNCgLQkA46f1Lz5EHgmdeYl9SZ+4RfLXIHHA2NzDnNa5q0pLC8pry6NiVVhPw=
     - CXX=g++-4.8
     - ANDROID_HOME=$TRAVIS_BUILD_DIR/android-sdk-linux
     - zipalign=$ANDROID_HOME/build-tools/26.0.1/zipalign
@@ -72,6 +71,8 @@ cache:
 
 deploy:
   provider: script
+  api_key:
+    secure: RpuHxPQOnlJsTDyonHEVv4Rvnylk+9t4mOHytxSU8S9odjdvbimr4bvYpsYvHDxXIEMy/eqoMoJJug2NoeKZ685wW6SJ3pOvAt0qxkrUW+IsSUZQjKpAbHXbnoOJOEhSbVvSMW1ij2j9t9njAMWZsz+0CsF2JCvpts459K6yk2m/mlhkpuA7wUqcnut2jnhvEKYc5TsliSa9leLaSYbIRJsyYiUC8wk6dD2Dzs2eDn0+dQsvJax+Db8KAUkeV5tRkxXiPz68u95HkoPpaVXB+QtzgSbBANs5eoEFWLEkDH7cPvX40mtrjDLAy0seEkqup9OuesxcGKBKX/FS5oobHi7/wZn67iZ1Hw/GlAUw5OCHOxrA2ncyeNe+ENWb2a31uWwLlOwtS2XpjPCdxZmVq4w1EGWZaeoWY+Ma16B289XtmCLlbV2NN20qEIG5eHx5q4dGRnI+1l+jV2qecZC80w6QieMqFOZmCMec7L3llJteKa7QNhMR7oj1gmT94dBT+ZxA22WC8D/5GxR+017Q03NYYSs2//kKVWOeuKlk1OJ10tP/w2j0LWwVzrbI4ltkkKRZ+Xp4s3mExbPk3LnU+kqfKHWaj5WGzZ4hmHNGQVD2j5nNCgLQkA46f1Lz5EHgmdeYl9SZ+4RfLXIHHA2NzDnNa5q0pLC8pry6NiVVhPw=
   script: scripts/deploy_github_releases.sh $CACHE_NAME
   skip_cleanup: true
   on:
