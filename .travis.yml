@@ -27,9 +27,9 @@ env:
 
 branches:
   only:
-  - master
+    - master
   except: # tags commited by travis
-  - /^v?\d+\.\d+\.\d+$/
+    - /^v?\d+\.\d+\.\d+$/
 
 git:
   depth: 5

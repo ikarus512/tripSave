@@ -1,14 +1,30 @@
 #!/usr/bin/env bash
 
+echo TRAVIS_BUILD_NUMBER=$TRAVIS_BUILD_NUMBER
+
 ### Create a git tag of the new version to use
 ### http://phdesign.com.au/programming/auto-increment-project-version-from-travis
-# If package.json major and minor versions match last tag, then increment last tag. Else use package.json major.minor.0.
-"{ sed -nE 's/^[ \\t]*\"version\": \"([0-9]{1,}\\.[0-9]{1,}\\.)[0-9x]{1,}\",$/\\1/p' package.json; git describe --abbrev=0 | sed -E 's/^v([0-9]{1,}\\.[0-9]{1,}\\.)([0-9]{1,})$/\\1 \\2/g'; } | tr \"\\n\" \" \" | awk '{printf($1==$2?\"v\"$2$3+1:\"v\"$1\"0\")}' | xargs -I {} git tag -a {} -m \"{}\"\n"
+echo '=== Current major/minor version taken from package.json:'
+    curMjMn=$(sed -nE 's/^[ \t]*"version": "([0-9]{1,}\.[0-9]{1,}\.)[0-9x]{1,}",$/\1/p' package.json)
+    echo curMjMn=$curMjMn
+echo '=== Get the latest git tag (e.g. v1.2.43)'
+    git describe --abbrev=0 || exit 1
+echo '=== Get tag major/minor version and the patch version:'
+    tagMjMn=$(git describe --abbrev=0 | sed -E 's/^v([0-9]{1,}\.[0-9]{1,}\.)([0-9]{1,})$/\1/g')
+    tagPv=$(git describe --abbrev=0 | sed -E 's/^v([0-9]{1,}\.[0-9]{1,}\.)([0-9]{1,})$/\2/g')
+    echo tagMjMn=$tagMjMn
+    echo tagPv=$tagPv
+echo '=== If curMjMn==tagMjMn, increment the patch version, otherwise use major.minor.0:'
+    if [ "$curMjMn" == "$tagMjMn" ];then newPv=$(($tagPv+1)); else newPv=0; fi
+    newVer=$tagMjMn$newPv
+    echo newVer=$newVer
+echo '=== Save resulting version number into a git tag (e.g. v1.2.44):'
+    git tag -a v$newVer -m "v$newVer"
 
-# Update package.json based on the git tag we just created
-npm --no-git-tag-version version from-git
+echo '=== Update package.json based on the git tag'
+    npm --no-git-tag-version version from-git
 
 git status
 git diff -w
 
-#git push --tags || exit 1
+git push --tags || exit 1
