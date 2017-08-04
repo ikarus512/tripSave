@@ -73,5 +73,4 @@ echo '=== git diff'
     git diff -w
 
 echo '=== git push --tags'
-    # git push --tags || exit 1
     git push origin1 master --tags || exit 1
