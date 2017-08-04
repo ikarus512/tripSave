@@ -52,11 +52,12 @@ echo '=== Current major/minor version taken from package.json:'
     echo curMjMn=$curMjMn
 echo '=== Get the latest git tag (e.g. v1.2.43)'
     #git describe --abbrev=0 || exit 1
+    git describe HEAD
+    git describe --always
     git describe || exit 1
-    git describe HEAD || exit 1
 echo '=== Get tag major/minor version and the patch version:'
-    tagMjMn=$(git describe | sed -E 's/^v([0-9]{1,}\.[0-9]{1,}\.)([0-9]{1,}).*$/\1/g')
-    tagPv=$(git describe | sed -E 's/^v([0-9]{1,}\.[0-9]{1,}\.)([0-9]{1,}).*$/\2/g')
+    tagMjMn=$(git describe --always | sed -E 's/^v([0-9]{1,}\.[0-9]{1,}\.)([0-9]{1,}).*$/\1/g')
+    tagPv=$(git describe --always | sed -E 's/^v([0-9]{1,}\.[0-9]{1,}\.)([0-9]{1,}).*$/\2/g')
     echo tagMjMn=$tagMjMn
     echo tagPv=$tagPv
 echo '=== If curMjMn==tagMjMn, increment the patch version, otherwise use major.minor.0:'
