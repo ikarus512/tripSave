@@ -47,14 +47,16 @@ echo '=== git diff'
 ### Create a git tag of the new version to use
 ### http://phdesign.com.au/programming/auto-increment-project-version-from-travis
 echo '=== Current major/minor version taken from package.json:'
-    curMjMn=$(sed -nE 's/^[ \t]*"version": "([0-9]{1,}\.[0-9]{1,}\.)[0-9x]{1,}",$/\1/p' package.json)
+    curMjMn=$(sed -nE 's/^[ \t]*"version": "([0-9]{1,}\.[0-9]{1,}\.)([0-9x]{1,})",$/\1/p' package.json)
+    curPv=$(sed -nE 's/^[ \t]*"version": "([0-9]{1,}\.[0-9]{1,}\.)([0-9x]{1,})",$/\2/p' package.json)
     echo curMjMn=$curMjMn
+    echo curPv=$curPv
 echo '=== Get the latest git tag (e.g. v1.2.43)'
     git describe
 echo '=== Get tag major/minor version and the patch version:'
     tagMjMn=$(git describe | sed -E 's/^v([0-9]{1,}\.[0-9]{1,}\.)([0-9]{1,}).*$/\1/g')
     tagPv=$(git describe | sed -E 's/^v([0-9]{1,}\.[0-9]{1,}\.)([0-9]{1,}).*$/\2/g')
-    if [ "$tagMjMn" == "" ];then tagMjMn=$curMjMn; fi # if current commit not tagged
+    if [ "$tagMjMn" == "" ];then tagMjMn=$curMjMn; tagPv=$curPv; fi # if current commit not tagged
     echo tagMjMn=$tagMjMn
     echo tagPv=$tagPv
 echo '=== If curMjMn==tagMjMn, increment the patch version, otherwise use major.minor.0:'
