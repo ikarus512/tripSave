@@ -55,9 +55,9 @@ echo '=== Get the latest git tag (e.g. v1.2.43)'
 echo '=== Get tag major/minor version and the patch version:'
     tagMjMn=$(git describe | sed -E 's/^v([0-9]{1,}\.[0-9]{1,}\.)([0-9]{1,}).*$/\1/g')
     tagPv=$(git describe | sed -E 's/^v([0-9]{1,}\.[0-9]{1,}\.)([0-9]{1,}).*$/\2/g')
+    if [ "$tagMjMn" == "" ];then tagMjMn=$curMjMn; fi # if current commit not tagged
     echo tagMjMn=$tagMjMn
     echo tagPv=$tagPv
-    if [ "$tagMjMn" == "" ];then $tagMjMn=$curMjMn; fi # if current commit not tagged
 echo '=== If curMjMn==tagMjMn, increment the patch version, otherwise use major.minor.0:'
     if [ "$curMjMn" == "$tagMjMn" ];then newPv=$(($tagPv+1)); else newPv=0; fi
     newVer=$tagMjMn$newPv
