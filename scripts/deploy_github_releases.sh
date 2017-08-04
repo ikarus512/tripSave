@@ -2,6 +2,11 @@
 
 echo TRAVIS_BUILD_NUMBER=$TRAVIS_BUILD_NUMBER
 
+echo '=== git status'
+    git status
+echo '=== git diff'
+    git diff -w
+
 ### Create a git tag of the new version to use
 ### http://phdesign.com.au/programming/auto-increment-project-version-from-travis
 echo '=== Current major/minor version taken from package.json:'
@@ -24,7 +29,10 @@ echo '=== Save resulting version number into a git tag (e.g. v1.2.44):'
 echo '=== Update package.json based on the git tag'
     npm --no-git-tag-version version from-git
 
-git status
-git diff -w
+echo '=== git status'
+    git status
+echo '=== git diff'
+    git diff -w
 
-git push --tags || exit 1
+echo '=== git push --tags'
+    git push --tags || exit 1

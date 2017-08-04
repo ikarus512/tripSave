@@ -71,7 +71,7 @@ cache:
 
 deploy:
   provider: script
-  script: deploy_github_releases.sh $CACHE_NAME
+  script: scripts/deploy_github_releases.sh $CACHE_NAME
   skip_cleanup: true
   on:
     branch: master
