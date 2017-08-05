@@ -31,7 +31,6 @@ branches:
   except: # tags starting with vX.X.X (usually commited by travis)
     - /^v?\d+\.\d+\.\d+/
 
-
 git:
   depth: 100
 
