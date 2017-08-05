@@ -4,8 +4,9 @@ if [ "$1" != JOB2 ];then exit; fi
 
 echo TRAVIS_BUILD_NUMBER=$TRAVIS_BUILD_NUMBER    p1=$1
 
-setup_git() {
-    echo '=== setup_git'
+setupGit() {
+    echo '========================================'
+    echo '=== setupGit():'
     echo '    cur dir: $PWD'
     mkdir -p ../_tmp_fulltree || exit 1
     cd ../_tmp_fulltree || exit 1
@@ -24,72 +25,57 @@ setup_git() {
     git remote -v
 }
 
-commit_website_files() {
-    # git checkout -b gh-pages
-    # git add . *.html
-    # git commit --message "Travis build: $TRAVIS_BUILD_NUMBER"
+updateTag() {
+    echo '========================================'
+    echo '=== updateTag():'
+
+    ### Create a git tag of the new version to use
+    ### http://phdesign.com.au/programming/auto-increment-project-version-from-travis
+    echo '=== Current major/minor version taken from package.json:'
+        curMjMn=$(sed -nE 's/^[ \t]*"version": "([0-9]{1,}\.[0-9]{1,}\.)([0-9x]{1,})",$/\1/p' package.json)
+        curPv=$(sed -nE 's/^[ \t]*"version": "([0-9]{1,}\.[0-9]{1,}\.)([0-9x]{1,})",$/\2/p' package.json)
+        echo curMjMn=$curMjMn
+        echo curPv=$curPv
+    echo '=== Get the latest git tag (e.g. v1.2.43)'
+        git describe
+    echo '=== Get tag major/minor version and the patch version:'
+        tagMjMn=$(git describe | sed -E 's/^v([0-9]{1,}\.[0-9]{1,}\.)([0-9]{1,}).*$/\1/g')
+        tagPv=$(git describe | sed -E 's/^v([0-9]{1,}\.[0-9]{1,}\.)([0-9]{1,}).*$/\2/g')
+        if [ "$tagMjMn" == "" ];then tagMjMn=$curMjMn; tagPv=$curPv; fi # if current commit not tagged
+        echo tagMjMn=$tagMjMn
+        echo tagPv=$tagPv
+    echo '=== If curMjMn==tagMjMn, increment the patch version, otherwise use major.minor.0:'
+        if [ "$curMjMn" == "$tagMjMn" ];then newPv=$(($tagPv+1)); else newPv=0; fi
+        newVer=$tagMjMn$newPv
+        echo newVer=$newVer
+    echo '=== Save newVer into a git tag (e.g. v1.2.44):'
+        git tag -a v$newVer -m "v$newVer travis-build-$TRAVIS_BUILD_NUMBER"
+
+    echo '=== Update package.json based on the git tag'
+        npm --no-git-tag-version version from-git
+
+    echo '=== git status'
+        git status
+    echo '=== git diff'
+        git diff -w
+
+    echo '=== git push --tags'
+        # git add hooks/*
+        # git add scripts/*
+        git add package.json
+        git commit -m "[ci skip] (Travis Build #$TRAVIS_BUILD_NUMBER): package.json version=$newVer"
+        # git commit -m "[ci skip] update file attributes"
+        # git push origin master
+        git push origin master --tags || exit 1
 }
 
-upload_files() {
+publishGithubRelease() {
+    echo '========================================'
+    echo '=== publishGithubRelease():'
     # git remote add origin-pages https://${GH_TOKEN}@github.com/MVSE-outreach/resources.git > /dev/null 2>&1
     # git push --quiet --set-upstream origin-pages gh-pages
 }
 
-setup_git
-# commit_website_files
-# upload_files
-
-# echo '=== git status'
-#     git status
-# echo '=== git diff'
-#     git diff -w
-
-# git add hooks/*
-# git add scripts/*
-# git commit --force -m "[ci skip] update file attributes"
-# # git push origin master
-
-# echo '=== git status'
-#     git status
-# echo '=== git diff'
-#     git diff -w
-
-
-### Create a git tag of the new version to use
-### http://phdesign.com.au/programming/auto-increment-project-version-from-travis
-echo '=== Current major/minor version taken from package.json:'
-    curMjMn=$(sed -nE 's/^[ \t]*"version": "([0-9]{1,}\.[0-9]{1,}\.)([0-9x]{1,})",$/\1/p' package.json)
-    curPv=$(sed -nE 's/^[ \t]*"version": "([0-9]{1,}\.[0-9]{1,}\.)([0-9x]{1,})",$/\2/p' package.json)
-    echo curMjMn=$curMjMn
-    echo curPv=$curPv
-echo '=== Get the latest git tag (e.g. v1.2.43)'
-    git describe
-echo '=== Get tag major/minor version and the patch version:'
-    tagMjMn=$(git describe | sed -E 's/^v([0-9]{1,}\.[0-9]{1,}\.)([0-9]{1,}).*$/\1/g')
-    tagPv=$(git describe | sed -E 's/^v([0-9]{1,}\.[0-9]{1,}\.)([0-9]{1,}).*$/\2/g')
-    if [ "$tagMjMn" == "" ];then tagMjMn=$curMjMn; tagPv=$curPv; fi # if current commit not tagged
-    echo tagMjMn=$tagMjMn
-    echo tagPv=$tagPv
-echo '=== If curMjMn==tagMjMn, increment the patch version, otherwise use major.minor.0:'
-    if [ "$curMjMn" == "$tagMjMn" ];then newPv=$(($tagPv+1)); else newPv=0; fi
-    newVer=$tagMjMn$newPv
-    echo newVer=$newVer
-echo '=== Save newVer into a git tag (e.g. v1.2.44):'
-    git tag -a v$newVer -m "v$newVer travis-build-$TRAVIS_BUILD_NUMBER"
-
-echo '=== Update package.json based on the git tag'
-    npm --no-git-tag-version version from-git
-
-echo '=== git status'
-    git status
-echo '=== git diff'
-    git diff -w
-
-echo '=== git push --tags'
-    # git add hooks/*
-    # git add scripts/*
-    git add package.json
-    git commit -m "[ci skip] package.json version update"
-    # git commit -m "[ci skip] update file attributes"
-    # git push origin master
-    git push origin master --tags || exit 1
+setupGit
+updateTag
+publishGithubRelease
