@@ -20,7 +20,7 @@ setupGit() {
     # git config --global user.name "Travis CI"
     git config user.email "$MYEMAIL"
     git config user.name "ikarus512"
-    # git remote rm origin
+    git remote rm origin
     git remote add origin https://ikarus512:${GITHUB_API_TOKEN}@github.com/ikarus512/tripSave.git
     git remote -v
 }
@@ -59,13 +59,14 @@ updateTag() {
     echo '=== git diff'
         git diff -w
 
-    echo '=== git push --tags'
+    echo '=== git add package.json'
         # git add hooks/*
         # git add scripts/*
         git add package.json
         git commit -m "[ci skip] (Travis Build #$TRAVIS_BUILD_NUMBER): package.json version=$newVer"
         # git commit -m "[ci skip] update file attributes"
         # git push origin master
+    echo '=== git push'
         git push origin master --tags || exit 1
 }
 
