@@ -32,7 +32,7 @@ branches:
     - /^v?\d+\.\d+\.\d+/
 
 git:
-  depth: 5
+  depth: 100
 
 before_install:
   - npm i -g npm
