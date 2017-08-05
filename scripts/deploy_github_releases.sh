@@ -55,7 +55,7 @@ function updateTag() {
         echo tagPv=$tagPv
     echo "=== If curMjMn==tagMjMn, increment the patch version, otherwise use major.minor.0:"
         if [ "$curMjMn" == "$tagMjMn" ];then newPv=$(($tagPv+1)); else newPv=0; fi
-        newVer=$tagMjMn$newPv
+        newVer=$curMjMn$newPv
         echo newVer=$newVer
     # echo "=== Save newVer into a git tag (e.g. v1.2.44):"
     #     git tag -a v$newVer -m "[ci skip] (Build #$TRAVIS_BUILD_NUMBER): add tag v$newVer"
