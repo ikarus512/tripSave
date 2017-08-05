@@ -5,44 +5,55 @@ if [ "$1" != JOB2 ];then exit; fi
 echo TRAVIS_BUILD_NUMBER=$TRAVIS_BUILD_NUMBER    p1=$1
 
 setup_git() {
-  # git config --global user.email "travis@travis-ci.org"
-  # git config --global user.name "Travis CI"
-  git config user.email "$MYEMAIL"
-  git config user.name "ikarus512"
-  git remote rm origin1
-  git remote add origin1 https://ikarus512:${GITHUB_API_TOKEN}@github.com/ikarus512/tripSave.git
-  git remote -v
+    echo '=== setup_git'
+    echo '    cur dir: $PWD'
+    mkdir -p ../_tmp_fulltree || exit 1
+    cd ../_tmp_fulltree || exit 1
+    echo '    cur dir: $PWD'
+
+    git clone --depth=5 https://github.com/ikarus512/tripSave.git
+    cd tripSave || exit 1
+    echo '    cur dir: $PWD'
+
+    # git config --global user.email "travis@travis-ci.org"
+    # git config --global user.name "Travis CI"
+    git config user.email "$MYEMAIL"
+    git config user.name "ikarus512"
+    # git remote rm origin
+    git remote add origin https://ikarus512:${GITHUB_API_TOKEN}@github.com/ikarus512/tripSave.git
+    git remote -v
 }
 
 commit_website_files() {
-  git checkout -b gh-pages
-  git add . *.html
-  git commit --message "Travis build: $TRAVIS_BUILD_NUMBER"
+    # git checkout -b gh-pages
+    # git add . *.html
+    # git commit --message "Travis build: $TRAVIS_BUILD_NUMBER"
 }
 
 upload_files() {
-  git remote add origin-pages https://${GH_TOKEN}@github.com/MVSE-outreach/resources.git > /dev/null 2>&1
-  git push --quiet --set-upstream origin-pages gh-pages
+    # git remote add origin-pages https://${GH_TOKEN}@github.com/MVSE-outreach/resources.git > /dev/null 2>&1
+    # git push --quiet --set-upstream origin-pages gh-pages
 }
 
 setup_git
 # commit_website_files
 # upload_files
 
-echo '=== git status'
-    git status
-echo '=== git diff'
-    git diff -w
+# echo '=== git status'
+#     git status
+# echo '=== git diff'
+#     git diff -w
 
-    git add hooks/*
-    git add scripts/*
-    git commit --force -m "[ci skip] update file attributes"
-    # git push origin1 master
+# git add hooks/*
+# git add scripts/*
+# git commit --force -m "[ci skip] update file attributes"
+# # git push origin master
 
-echo '=== git status'
-    git status
-echo '=== git diff'
-    git diff -w
+# echo '=== git status'
+#     git status
+# echo '=== git diff'
+#     git diff -w
+
 
 ### Create a git tag of the new version to use
 ### http://phdesign.com.au/programming/auto-increment-project-version-from-travis
@@ -80,6 +91,5 @@ echo '=== git push --tags'
     git add package.json
     git commit -m "[ci skip] package.json version update"
     # git commit -m "[ci skip] update file attributes"
-    # git push origin1 master
-
-    git push origin1 master --tags || exit 1
+    # git push origin master
+    git push origin master --tags || exit 1
