@@ -6,7 +6,7 @@ export PATH=$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-t
 
 if [ ! -e android-sdk-linux/tools/bin ];then
 
-    wget http://dl.google.com/android/android-sdk_r24.4-linux.tgz
+    wget --quiet http://dl.google.com/android/android-sdk_r24.4-linux.tgz
     tar -xf android-sdk_r24.4-linux.tgz
 
     #android list sdk --extended # && android list sdk -a --extended
