@@ -1,7 +1,7 @@
 {
     "name": "tripsave",
-    "version": "1.0.16",
-    "travisBuildNumber": "11",
+    "version": "1.0.17",
+    "travisBuildNumber": "116",
     "description": "Android app for saving trip with GPS route and photo sequence.",
     "main": "index.js",
     "scripts": {
