@@ -189,6 +189,7 @@ function getLatestBuildNumber() {
     pushd _tmp/tripSave >/dev/null
         git fetch
         result=$(cat .travis.latest.build.number.txt 2>/dev/null) || result=0
+        # result=$(sed -nE 's/^[ \t]*"travisBuildNumber": "([0-9]{1,})",$/\1/p' package.json)
     popd >/dev/null
 }
 
@@ -260,6 +261,8 @@ function githubTagAndPublishRelease() {
             pushd _tmp/tripSave >/dev/null
                 echo $TRAVIS_BUILD_NUMBER >.travis.latest.build.number.txt
                 git add .travis.latest.build.number.txt || errors=$(($errors+1))
+                # sed -i 's/^([ \t]*"travisBuildNumber": ")[0-9]{1,}(",)$/\1$TRAVIS_BUILD_NUMBER\2/p' package.json
+                # sed -iE 's/^([ \t]*"travisBuildNumber": ")[0-9]{1,}(",)$/\1$TRAVIS_BUILD_NUMBER\2/p' package.json
             popd >/dev/null
             if [ $errors -ne 0 ];then echo "Error in $func"; return 1; fi
 
@@ -276,14 +279,11 @@ function githubTagAndPublishRelease() {
                 if [ "$TRAVIS_BUILD_NUMBER" == "" ];then
                     npm version $newVer -m "[ci skip]: bumped tag v$newVer" || errors=$(($errors+1))
                 else
-                    npm version $newVer -m "[ci skip] (Travis Build #$TRAVIS_BUILD_NUMBER): bumped tag v$newVer" || errors=$(($errors+1))
+                    npm version $newVer --force -m "[ci skip] (Travis Build #$TRAVIS_BUILD_NUMBER): bumped tag v$newVer" || errors=$(($errors+1))
                 fi
                 # echo "=== git push"
                 if [ $errors -eq 0 ];then
-                    echo "=== git push origin master"
-                    git push origin master        #|| errors=$(($errors+1))
-                    echo "=== git push origin master --tags"
-                    git push origin master --tags #|| errors=$(($errors+1))
+                    git push origin master --tags || errors=$(($errors+1))
                 fi
             popd >/dev/null
             if [ $errors -ne 0 ];then echo "Error in $func"; return 1; fi
