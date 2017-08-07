@@ -22,8 +22,8 @@ env:
     - ANDROID_HOME=$TRAVIS_BUILD_DIR/android-sdk-linux
     - zipalign=$ANDROID_HOME/build-tools/26.0.1/zipalign
   matrix:
-    - CACHE_NAME=JOB1 BUILD_SCRIPT=scripts/ionic_cordova_build_android_debug.sh
-    - CACHE_NAME=JOB2 BUILD_SCRIPT=scripts/ionic_cordova_build_android_release.sh
+    - JOBNAME=tripSave_debug   BUILD_SCRIPT=scripts/ionic_cordova_build_android_debug.sh
+    - JOBNAME=tripSave_release BUILD_SCRIPT=scripts/ionic_cordova_build_android_release.sh
 
 branches:
   only:
@@ -34,33 +34,6 @@ branches:
 git:
   depth: 100
 
-before_install:
-  - npm i -g npm
-  - npm --version
-  - source ./scripts/android_sdk_install.sh
-
-  ### Unpack ssh key for git
-  # - echo -n $id_rsa_{00..30} >> ~/.ssh/id_rsa_base64
-  # - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
-  # - chmod 600 ~/.ssh/id_rsa
-  # # Disable SSH server fingerprint verification
-  # - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-
-install:
-  - npm install -g gulp bower cordova ionic
-  - npm install
-  - bower update
-  - source ./scripts/ionic_cordova_prepare.sh
-
-script:
-  - echo "$BUILD_SCRIPT"; SECONDS=0; echo -en "travis_fold:start:script.1\\r"
-  -       $BUILD_SCRIPT
-  - echo -en "travis_fold:end:script.1\\r"
-  - duration=$SECONDS; echo "script run $(($duration / 60))m $(($duration % 60))s"
-  - ls platforms/android/build/outputs/apk
-  - ls releases
-  - scripts/deploy_github_releases.sh $CACHE_NAME
-
 cache:
   timeout: 300 # 5*60 seconds
   directories:
@@ -70,25 +43,22 @@ cache:
   - android-sdk-linux
   - $NVM_DIR # $(npm config get prefix)
 
-# deploy:
-#   provider: script
-#   script: scripts/deploy_github_releases.sh $CACHE_NAME
-#   skip_cleanup: true
-#   on:
-#     branch: master
+before_install:
+  - npm i -g npm
+  - npm --version
+  - source ./scripts/android_sdk_install.sh
 
-# deploy:
-#   provider: releases # GitHub releases
-#   api_key:
-#     secure: RpuHxPQOnlJsTDyonHEVv4Rvnylk+9t4mOHytxSU8S9odjdvbimr4bvYpsYvHDxXIEMy/eqoMoJJug2NoeKZ685wW6SJ3pOvAt0qxkrUW+IsSUZQjKpAbHXbnoOJOEhSbVvSMW1ij2j9t9njAMWZsz+0CsF2JCvpts459K6yk2m/mlhkpuA7wUqcnut2jnhvEKYc5TsliSa9leLaSYbIRJsyYiUC8wk6dD2Dzs2eDn0+dQsvJax+Db8KAUkeV5tRkxXiPz68u95HkoPpaVXB+QtzgSbBANs5eoEFWLEkDH7cPvX40mtrjDLAy0seEkqup9OuesxcGKBKX/FS5oobHi7/wZn67iZ1Hw/GlAUw5OCHOxrA2ncyeNe+ENWb2a31uWwLlOwtS2XpjPCdxZmVq4w1EGWZaeoWY+Ma16B289XtmCLlbV2NN20qEIG5eHx5q4dGRnI+1l+jV2qecZC80w6QieMqFOZmCMec7L3llJteKa7QNhMR7oj1gmT94dBT+ZxA22WC8D/5GxR+017Q03NYYSs2//kKVWOeuKlk1OJ10tP/w2j0LWwVzrbI4ltkkKRZ+Xp4s3mExbPk3LnU+kqfKHWaj5WGzZ4hmHNGQVD2j5nNCgLQkA46f1Lz5EHgmdeYl9SZ+4RfLXIHHA2NzDnNa5q0pLC8pry6NiVVhPw=
-#   file:
-#     - releases/tripSave-debug.apk
-#     - releases/tripSave-debug-x86.apk
-#     - releases/tripSave.apk
-#     - releases/tripSave-x86.apk
-#   # overwrite: true
-#   skip_cleanup: true
-#   on:
-#     repo: ikarus512/tripSave
-#     # branch: master
-#     # tags: true
+install:
+  - npm install -g gulp bower cordova ionic
+  - npm install
+  - bower update
+  - source ./scripts/ionic_cordova_prepare.sh
+
+before_script:
+  - $BUILD_SCRIPT
+  - scripts/deploy_github_releases.sh $JOBNAME
+
+script:
+  - ls platforms/android/build/outputs/apk
+  - ls releases
+  - echo 1
