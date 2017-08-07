@@ -18,8 +18,8 @@
 function githubReleaseCreate() {
 
     ### get params
-    REPO=$1; shift
-    tag="$1"; shift
+    local REPO=$1; shift
+    local tag="$1"; shift
     ### print params
     local func=${FUNCNAME[0]}
     echo "========================================"
@@ -45,8 +45,8 @@ function githubReleaseCreate() {
 function githubReleaseGetId() {
 
     ### get params
-    REPO=$1; shift
-    tag="$1"; shift
+    local REPO=$1; shift
+    local tag="$1"; shift
     ### print params
     local func=${FUNCNAME[0]}
     echo "========================================"
@@ -76,9 +76,9 @@ function githubReleaseGetId() {
 function githubReleaseUploadAsset() {
 
     ### get params
-    REPO=$1; shift
-    tag="$1"; shift
-    aFile="$1"; shift
+    local REPO=$1; shift
+    local tag="$1"; shift
+    local aFile="$1"; shift
     ### print params
     local func=${FUNCNAME[0]}
     echo "========================================"
@@ -121,8 +121,8 @@ function githubReleaseUploadAsset() {
 function githubReleaseDelete() {
 
     ### get params
-    REPO=$1; shift
-    tag="$1"; shift
+    local REPO=$1; shift
+    local tag="$1"; shift
     ### print params
     local func=${FUNCNAME[0]}
     echo "========================================"
@@ -156,7 +156,8 @@ function cloneRepo() {
     local REPO=$1
     local dir=$2
     if [ ! -d $dir ];then
-        git clone --depth=20 https://ikarus512:$GITHUB_API_TOKEN@github.com/$REPO.git _tmp/tripSave $dir
+        echo git clone --depth=20 https://ikarus512:$GITHUB_API_TOKEN@github.com/$REPO.git $dir
+        git clone --depth=20 https://ikarus512:$GITHUB_API_TOKEN@github.com/$REPO.git $dir
         # pushd $dir
         #     git config --global user.email "travis@travis-ci.org"
         #     git config --global user.name "Travis CI"
@@ -174,7 +175,7 @@ function getPackageVersion() {
 }
 
 function getLatestTag() {
-    REPO=$1
+    local REPO=$1
     cloneRepo $REPO _tmp/tripSave
     pushd _tmp/tripSave >/dev/null
         git fetch
@@ -183,7 +184,7 @@ function getLatestTag() {
 }
 
 function getLatestBuildNumber() {
-    REPO=$1
+    local REPO=$1
     cloneRepo $REPO _tmp/tripSave
     pushd _tmp/tripSave >/dev/null
         git fetch
@@ -222,7 +223,7 @@ function getNewTagBumped() {
 function githubTagAndPublishRelease() {
 
     ### get params
-    REPO=$1; shift
+    local REPO=$1; shift
     ### print params
     local func=${FUNCNAME[0]}
     echo "========================================"
