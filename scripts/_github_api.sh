@@ -261,8 +261,7 @@ function githubTagAndPublishRelease() {
             pushd _tmp/tripSave >/dev/null
                 echo $TRAVIS_BUILD_NUMBER >.travis.latest.build.number.txt
                 git add .travis.latest.build.number.txt || errors=$(($errors+1))
-                # sed -i 's/^([ \t]*"travisBuildNumber": ")[0-9]{1,}(",)$/\1$TRAVIS_BUILD_NUMBER\2/p' package.json
-                # sed -iE 's/^([ \t]*"travisBuildNumber": ")[0-9]{1,}(",)$/\1$TRAVIS_BUILD_NUMBER\2/p' package.json
+                # sed --in-place -r "s/^(\s*\"travisBuildNumber\": \")[0-9]+(\",)$/\1$TRAVIS_BUILD_VERSION\2/" package.json
             popd >/dev/null
             if [ $errors -ne 0 ];then echo "Error in $func"; return 1; fi
 
