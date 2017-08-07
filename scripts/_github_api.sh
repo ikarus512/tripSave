@@ -240,7 +240,7 @@ function githubTagAndPublishRelease() {
 
     ### Running from Travis CI:
     ### if [ "$TRAVIS_BUILD_NUMBER" != "" ];then
-    ###     if [ "$TRAVIS_BUILD_NUMBER" != "latestBuildNumber" ];then
+    ###     if [ "$TRAVIS_BUILD_NUMBER" != "$latestBuildNumber" ];then
     ###         echo $TRAVIS_BUILD_NUMBER --> package.json
     ###         bump package version
     ###         git tag, commit, push
@@ -253,7 +253,7 @@ function githubTagAndPublishRelease() {
 
         getLatestBuildNumber $REPO; latestBuildNumber=$result; echo "=== latestBuildNumber=$latestBuildNumber"
 
-        if [ "$TRAVIS_BUILD_NUMBER" != "latestBuildNumber" ];then
+        if [ "$TRAVIS_BUILD_NUMBER" != "$latestBuildNumber" ];then
 
             sed --in-place -r "s/^(\s*\"travisBuildNumber\": \")[0-9]+(\",)$/\1$TRAVIS_BUILD_NUMBER\2/" _tmp/tripSave/package.json
             if [ $errors -ne 0 ];then echo "Error in $func"; return 1; fi
@@ -283,16 +283,16 @@ function githubTagAndPublishRelease() {
         fi
 
         getLatestTag $REPO; latestTag=$result; echo "=== latestTag=$latestTag"
-        githubReleaseCreate $REPO $latestTag
+        githubReleaseCreate $REPO v$latestTag
         myappname=tripSave
         case $JOBNAME in
         tripSave_debug)
-            githubReleaseUploadAsset $REPO $latestTag releases/$myappname-debug.apk
-            githubReleaseUploadAsset $REPO $latestTag releases/$myappname-debug-x86.apk
+            githubReleaseUploadAsset $REPO v$latestTag releases/$myappname-debug.apk
+            githubReleaseUploadAsset $REPO v$latestTag releases/$myappname-debug-x86.apk
         ;;
         tripSave_release)
-            githubReleaseUploadAsset $REPO $latestTag releases/$myappname.apk
-            githubReleaseUploadAsset $REPO $latestTag releases/$myappname-x86.apk
+            githubReleaseUploadAsset $REPO v$latestTag releases/$myappname.apk
+            githubReleaseUploadAsset $REPO v$latestTag releases/$myappname-x86.apk
         ;;
         esac
 
