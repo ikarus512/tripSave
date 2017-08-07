@@ -14,6 +14,7 @@
 #  *
 #  */
 
+# sed doc: http://www.grymoire.com/Unix/Sed.html#uh-62f3
 
 function githubReleaseCreate() {
 
