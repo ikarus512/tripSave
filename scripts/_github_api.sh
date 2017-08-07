@@ -280,7 +280,10 @@ function githubTagAndPublishRelease() {
                 fi
                 # echo "=== git push"
                 if [ $errors -eq 0 ];then
-                    git push origin master --tags || errors=$(($errors+1))
+                    echo "=== git push origin master"
+                    git push origin master        #|| errors=$(($errors+1))
+                    echo "=== git push origin master --tags"
+                    git push origin master --tags #|| errors=$(($errors+1))
                 fi
             popd >/dev/null
             if [ $errors -ne 0 ];then echo "Error in $func"; return 1; fi
