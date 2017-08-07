@@ -261,7 +261,7 @@ function githubTagAndPublishRelease() {
                 echo $TRAVIS_BUILD_NUMBER >.travis.latest.build.number.txt
                 git add .travis.latest.build.number.txt || errors=$(($errors+1))
             popd >/dev/null
-            if [ $errors -eq 0 ];then echo "Error in $func"; return 1; fi
+            if [ $errors -ne 0 ];then echo "Error in $func"; return 1; fi
 
             # bump package version
             getPackageVersion; packageVersion=$result; echo "=== packageVersion=$packageVersion"
@@ -283,7 +283,7 @@ function githubTagAndPublishRelease() {
                     git push origin master --tags || errors=$(($errors+1))
                 fi
             popd >/dev/null
-            if [ $errors -eq 0 ];then echo "Error in $func"; return 1; fi
+            if [ $errors -ne 0 ];then echo "Error in $func"; return 1; fi
 
         fi
 
