@@ -168,6 +168,9 @@ function cloneRepo() {
         #     git remote -v
         # popd
     fi
+    pushd _tmp/tripSave >/dev/null
+        git fetch
+    popd >/dev/null
 }
 
 function getPackageVersion() {
@@ -178,7 +181,6 @@ function getLatestTag() {
     local REPO=$1
     cloneRepo $REPO _tmp/tripSave
     pushd _tmp/tripSave >/dev/null
-        git fetch
         result=$(git describe --tags | sed -E 's/^v([0-9]{1,}\.[0-9]{1,}\.[0-9]{1,}).*$/\1/g')
     popd >/dev/null
 }
@@ -186,11 +188,7 @@ function getLatestTag() {
 function getLatestBuildNumber() {
     local REPO=$1
     cloneRepo $REPO _tmp/tripSave
-    pushd _tmp/tripSave >/dev/null
-        git fetch
-        result=$(cat .travis.latest.build.number.txt 2>/dev/null) || result=0
-        # result=$(sed -nE 's/^[ \t]*"travisBuildNumber": "([0-9]{1,})",$/\1/p' package.json)
-    popd >/dev/null
+    result=$(sed -nE 's/^[ \t]*"travisBuildNumber": "([0-9]{1,})",$/\1/p' _tmp/tripSave/package.json)
 }
 
 function getNewTagBumped() {
@@ -243,8 +241,7 @@ function githubTagAndPublishRelease() {
     ### Running from Travis CI:
     ### if [ "$TRAVIS_BUILD_NUMBER" != "" ];then
     ###     if [ "$TRAVIS_BUILD_NUMBER" != "latestBuildNumber" ];then
-    ###         echo $TRAVIS_BUILD_NUMBER >.travis.latest.build.number.txt
-    ###         git add .travis.latest.build.number.txt
+    ###         echo $TRAVIS_BUILD_NUMBER --> package.json
     ###         bump package version
     ###         git tag, commit, push
     ###     getLatestTag
@@ -258,11 +255,7 @@ function githubTagAndPublishRelease() {
 
         if [ "$TRAVIS_BUILD_NUMBER" != "latestBuildNumber" ];then
 
-            pushd _tmp/tripSave >/dev/null
-                echo $TRAVIS_BUILD_NUMBER >.travis.latest.build.number.txt
-                git add .travis.latest.build.number.txt || errors=$(($errors+1))
-                # sed --in-place -r "s/^(\s*\"travisBuildNumber\": \")[0-9]+(\",)$/\1$TRAVIS_BUILD_VERSION\2/" package.json
-            popd >/dev/null
+            sed --in-place -r "s/^(\s*\"travisBuildNumber\": \")[0-9]+(\",)$/\1$TRAVIS_BUILD_NUMBER\2/" _tmp/tripSave/package.json
             if [ $errors -ne 0 ];then echo "Error in $func"; return 1; fi
 
             # bump package version
